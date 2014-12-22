@@ -1,9 +1,38 @@
-.row.page-header
-  %h1 点滴生活
-
+:css
+  .stat {
+        width: 330px;
+        padding-right: 15px;
+        padding-left: 15px;
+        float: left;
+        text-align: center;
+        margin-top: 3em;
+        margin-bottom: 3em;
+    }
+    .stat h2 {
+        font-weight: 300;
+        font-size: 30px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+    .stat .stat-heading {
+        margin-top: 20px;
+        font-weight: 700;
+        letter-spacing: -1px;
+        font-size: 6em;
+        color: #FFF;
+        width: 240px;
+        line-height: 240px;
+        background: #c0865e;
+        border-radius: 50%;
+        display: inline-block;
+        border: 1px solid #b9784c;
+    }
 .row
-  .col-lg-12
-    .panel.panel-default
-      .panel-heading 首页
-      .panel-body 
-        %h1 TODO
+  .col-lg-6
+    .stat{style: "float:right"}
+      %h2 Users
+      %span.stat-heading 111
+  .col-lg-6
+    .stat
+      %h2 Messages
+      %span.stat-heading 111
