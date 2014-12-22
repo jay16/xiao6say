@@ -1,32 +1,27 @@
 default: &default
-  domain: "http://weixin.solife.us"
-  admins: "admin"
+  domain: "http://xiao6say.solife.us"
+  admins: "jay_li@intfocus.com,jay_li@solife.us"
   weixin:
-    name: "生活点滴"
+    name: "小6语记"
     desc: "TODO"
-    token: "weixin-token"
+    token: "token"
   website:
-    title: "生活点滴"
+    title: "小6语记"
     subtitle: "Carder"
-    slogan: "爱生活、爱记录"
+    slogan: "你说、我记"
     favicon: "/images/favicon.ico"
-  alipay:
-    pid: '' 
-    secret: ''
-    seller_email: "" 
-    return_url: ""
-    notify_url: ""
+    footer: "xiao6say.solife.us"
   cdn:
     qiniu:
-      bucket: "bucket-name"
-      access_key: 'key'
-      secret_key: 'key'
-      out_link: "http://bucket.qiniudn.com"
+      bucket: "cdn"
+      access_key: ''
+      secret_key: ''
+      out_link: "http://cdn.qiniudn.com"
   server:
-    app_root_path: "/app-root-path"
-    host: "host"
-    user: "user"
-    password: "pwd"
+    app_root_path: "/home/work/xiao6say"
+    host: "solife.us"
+    user: "root"
+    password: "password"
 
 production:
   <<: *default
