@@ -40,15 +40,6 @@ class Message # 微信消息
 
     belongs_to :weixiner, :required => false
 
-    def reply
-      messages = self.weixiner.messages
-      message_count = messages.count
-      today_s_count = messages.all(:created_on => Time.now).count
-      text = "第%d条消息\n" % message_count + 
-        "今天第%d条消息" % today_s_count
-      update(response: text)
-      self.response
-    end
 
     # instance methods
     def human_name

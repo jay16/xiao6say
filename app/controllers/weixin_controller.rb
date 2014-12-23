@@ -1,8 +1,10 @@
 ﻿#encoding: utf-8 
 require "lib/utils/weixin_robot.rb"
+require "lib/utils/reply_robot.rb"
 require "timeout"
 class WeixinController < ApplicationController
   register Sinatra::WeiXinRobot
+  register Sinatra::ReplyRobot
   set :views, ENV["VIEW_PATH"] + "/weixin"
 
   configure do
@@ -24,9 +26,9 @@ class WeixinController < ApplicationController
     return if generate_signature != params[:signature]
 
     raw_message = @request_body
-    _message = message_receiver(raw_message)
-    _params = _message.instance_variables.inject({}) do |hash, var|
-      hash.merge!({var.to_s.sub(/@/,"") => _message.instance_variable_get(var)})
+    robot = message_receiver(raw_message)
+    _params = robot.instance_variables.inject({}) do |hash, var|
+      hash.merge!({var.to_s.sub(/@/,"") => robot.instance_variable_get(var)})
     end
     _params[:from_user_name] = _params.delete("user")
     _params[:to_user_name]   = _params.delete("robot")
@@ -37,10 +39,10 @@ class WeixinController < ApplicationController
 
     reply = "消息创建成功."
     Timeout::timeout(4) do # weixin limit 5s callback
-      reply += "\n" + message.reply
+      reply = reply_robot(message)
     end
 
-    weixin.sender(msg_type: "text") do |msg|
+    robot.sender(msg_type: "text") do |msg|
       msg.content = reply
       msg.to_xml
     end
