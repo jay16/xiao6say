@@ -14,7 +14,7 @@ class Message # 微信消息
     property :create_time    , String#  , :required => true
     property :msg_id         , String#  , :required => true
     # voice
-    property :media_id       , String
+    property :media_id       , Text
     property :format         , String
     property :recognition    , Text
     # text
@@ -39,7 +39,19 @@ class Message # 微信消息
     property :response       , Text
 
     belongs_to :weixiner, :required => false
+    has 1, :phantom
 
+    after :save do |message|
+      # 语音文字 => 词义解析 
+      if message.msg_type == "voice"
+        phantom = Phantom.new({
+          :message_id => message.id,
+          :raw_text   => message.recognition,
+          :json => "" 
+        })
+        phantom.save_with_logger
+      end
+    end
 
     # instance methods
     def human_name

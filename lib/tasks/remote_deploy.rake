@@ -47,7 +47,7 @@ namespace :remote do
       ssh.scp.download!(remote_db_path, local_db_path)
 
       puts "restart unicorn"
-      command = "cd %s && ./unicorn.sh restart" % remote_root_path
+      command = "cd %s && su - root -l -c '/bin/sh unicorn.sh restart'" % remote_root_path
       execute!(ssh, command)
     end
   end

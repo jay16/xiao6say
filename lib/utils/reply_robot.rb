@@ -18,7 +18,13 @@ module Sinatra
       def handler
         @result = case 
         when @raw_cmd =~ /(1|0)/
-          "yes or no"
+          voice = @message.weixiner.messages.last(:msg_type => "voice")
+          if voice
+            "您未有语音消息.\n评分失败."
+          else
+            status = "评分" + (voice.phantom.update(:ym => @raw_cmd) ? "成功" : "失败")
+            status += "\n" + "感谢您的参与."
+          end
         when @raw_cmd = "?"
           help
         else
