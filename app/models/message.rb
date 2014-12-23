@@ -43,11 +43,14 @@ class Message # 微信消息
 
     after :save do |message|
       # 语音文字 => 词义解析 
-      if message.msg_type == "voice"
+      recognition = message.recognition 
+      # recognition = "学习英语四十分钟"
+      if message.msg_type == "voice" and recognition.length > 0
+        result = recognition.recoginizer rescue [false, '{"error": "command error"}']
         phantom = Phantom.new({
           :message_id => message.id,
-          :raw_text   => message.recognition,
-          :json => "" 
+          :raw_text   => recognition,
+          :json       => result[0] ? result[1] : '{"error": "recoginizer error"}'
         })
         phantom.save_with_logger
       end

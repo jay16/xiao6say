@@ -1,10 +1,10 @@
-# [生活点滴]
+# [小6语记]
 
-## 启动服务
+## start up 
 
 ````
 bundle install
-./lib/script/unicorn {start|stop|restart}
+./unicorn {start|stop|restart}
 
 bundle exec rake remote:deploy
 ````

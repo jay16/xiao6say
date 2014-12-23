@@ -1,7 +1,7 @@
 require "rubygems"
 
 root_path = File.dirname(File.dirname(__FILE__))#File.expand_path("../../", __FILE__)
-ENV["APP_NAME"]  ||= "solife_weixin"
+ENV["APP_NAME"]  ||= "xiao6say"
 ENV["RACK_ENV"]  ||= "development"
 ENV["ASSET_CDN"] ||= "false"
 ENV["VIEW_PATH"]  = "%s/app/views" % root_path
@@ -42,10 +42,12 @@ $:.unshift("%s/lib/tasks" % root_path)
   $:.unshift("%s/app/%s" % [root_path, path])
 end
 
-require "lib/utils/core_ext/module.rb"
-require "lib/utils/action_logger.rb"
+
 require "lib/utils/boot.rb"
 include Utils::Boot
+
+require "lib/utils/action_logger.rb"
+recursion_require("lib/utils/core_ext", /\.rb$/, root_path)
 # config文夹下为配置信息优先加载
 # modle信息已在asset-hanler中加载
 # asset-hanel嵌入在application_controller

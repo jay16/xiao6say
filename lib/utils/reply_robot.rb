@@ -1,5 +1,6 @@
 #encoding: utf-8
 require "erb"
+require "json"
 
 module Sinatra
   module ReplyRobot 
@@ -19,10 +20,11 @@ module Sinatra
         @result = case 
         when @raw_cmd =~ /(1|0)/
           voice = @message.weixiner.messages.last(:msg_type => "voice")
-          if voice
+          if voice.nil?
             "您未有语音消息.\n评分失败."
           else
-            status = "评分" + (voice.phantom.update(:ym => @raw_cmd) ? "成功" : "失败")
+            status = "您认为解析: %s\n" % (@raw_cmd == "1" ? "正确" : "错误")
+            status += "执行" + (voice.phantom.update(:yn => @raw_cmd) ? "成功" : "失败")
             status += "\n" + "感谢您的参与."
           end
         when @raw_cmd = "?"
@@ -56,7 +58,18 @@ module Sinatra
       def handler
         case @message.msg_type
         when "voice" then
-          "您说:\n%s" % @message.recognition
+          result = "您说:\n%s\n" % @message.recognition.force_encoding('UTF-8')
+          result += "分解:\n"
+          begin
+            hash = ::JSON.parse(@message.phantom.json) 
+          rescue => e
+            puts e.message
+            hash = {error: "json error"}
+          end
+          hash.each_pair do |key, value|
+            result += "%s: %s" % [key, value]
+          end
+          return result
         when "text"  then 
           Command.exec(@message)
         when "event" then 

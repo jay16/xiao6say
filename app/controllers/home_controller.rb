@@ -5,6 +5,9 @@ class HomeController < ApplicationController
   # root page
   get "/" do
     redirect "/carder" if current_user
+    @weixiners = Weixiner.all
+    @messages  = Message.all
+    @phantoms  = Phantom.all
 
     haml :index, layout: :"../layouts/layout"
   end
