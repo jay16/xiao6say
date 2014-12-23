@@ -9,14 +9,25 @@
         %span.icon-bar
         %span.icon-bar
       = link_to Settings.website.title, "/", class: "navbar-brand"
-    / Collect the nav links, forms, and other content for toggling
-    .hidden.collapse.navbar-collapse{role: "navigation", id:"bs-example-navbar-collapse-1"}
-      %ul.nav.navbar-nav
-        %li.active= link_to "首页", "/"
+    - if current_user
+      / Collect the nav links, forms, and other content for toggling
+      .collapse.navbar-collapse{role: "navigation", id:"bs-example-navbar-collapse-1"}
 
-      %ul.nav.navbar-nav.navbar-right.hidden
-        %li
-          %a{href: "/carder/user/login"} 登陆
-        %li
-          %a{href: "/carder/user/register"} 注册
+        %input#navbar_right_lis{type: "hidden", value: 1}/
+        %ul.nav.navbar-nav.navbar-right
+          %li.dropdown
+            %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+              %i.glyphicon.glyphicon-cog
+              %b.caret
+            %ul.dropdown-menu
+              - if current_user.admin?
+                %li
+                  %a{:href => "/cpanel"}
+                    %i.glyphicon.glyphicon-wrench
+                    后台管理
+                %li.divider
+              %li
+                %a{:href => "/carder/user/logout"}
+                  %i.glyphicon.glyphicon-log-out
+                  退出
 

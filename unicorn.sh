@@ -14,8 +14,10 @@ else
     ENVIRONMENT="$3"
 fi
 
+CURRENT_PWD=$(pwd)
 echo "recompile phantom's C codes."
 cd lib/utils/recognizer && gcc processPattern.c -o processPattern
+cd ${CURRENT_PWD}
 
 echo "port: ${PORT} environment: ${ENVIRONMENT}"
 UNICORN=unicorn  

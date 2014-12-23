@@ -1,13 +1,25 @@
 ﻿#encoding: utf-8 
-class Carder::UserController < Carder::ApplicationController
-  set :views, ENV["VIEW_PATH"] + "/carder/user"
+class UserController < ApplicationController
+  set :views, ENV["VIEW_PATH"] + "/user"
+  set :layout, :"../layouts/layout"
 
-  # get /user/login
-  get "/login" do
-    haml :login, layout: :"../../layouts/layout"
+  get "/" do
+    @weixiners = Weixiner.all
+    @messages  = Message.all
+    @phantoms  = Phantom.all
+
+    haml :index, layout: settings.layout
   end
 
-  # login /user/login
+  # GET /user/login
+  get "/login" do
+    @user ||= User.new
+    @user.email = request.cookies["_email"]
+
+    haml :login, layout: settings.layout
+  end
+
+  # POST login /user/login
   post "/login" do
     user = User.first(email: params[:user][:email])
     if user and user.password == md5_key(params[:user][:password])
@@ -17,14 +29,14 @@ class Carder::UserController < Carder::ApplicationController
       redirect request.cookies["cookie_before_login_path"] || "/carder"
     else
       response.set_cookie "cookie_user_login_state", {:value=> "", :path => "/", :max_age => "2592000"}
+      response.set_cookie "_email", {:value=> params[:user][:email], :path => "/", :max_age => "2592000"}
 
-      flash[:warning] = "登陆失败"
-      redirect "/carder/user/login"
+      flash[:warning] = "登陆失败:" + (user ? "密码错误": "用户不存在")
+      redirect "/user/login"
     end
   end
 
-  # register page
-  # get /user/register
+  # GET /user/register
   get "/register" do
     @user ||= User.new
 
@@ -33,19 +45,23 @@ class Carder::UserController < Carder::ApplicationController
 
   # post /user/register
   post "/register" do
-    params[:user][:password] = md5_key(params[:user][:password])
-    user = User.new(params[:user])
+    user_params = params[:user]
+    user_params.delete(:password_confirmation)
+    user_params.delete("password_confirmation")
+    user_params[:password] = md5_key(user_params[:password])
+    puts user_params
+    user = User.new(user_params)
 
     if user.save
-      flash[:success] = "hi %s, 注册成功，请登陆..." % user.email
-      redirect "/carder/user/login"
+      flash[:success] = "hi %s, 注册成功，请登陆..." % user.name
+      redirect "/user/login"
     else
       msg = ["注册失败:"]
       format_dv_errors(user).each_with_index do |hash, index|
         msg.push("%d. %s" % [index+1, hash.to_a.join(": ")])
       end
       flash[:danger] = msg.join("<br>")
-      redirect "/carder/user/register"
+      redirect "/user/register"
     end
   end
 
@@ -56,7 +72,7 @@ class Carder::UserController < Carder::ApplicationController
     redirect "/"
   end
 
-  # post /carder/user/check_email_exist
+  # post /user/check_email_exist
   post "/check_email_exist" do
     user = User.first(email: params[:user][:email])
     res  = { valid: user.nil? }.to_json

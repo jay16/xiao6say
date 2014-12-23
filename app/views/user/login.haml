@@ -1,0 +1,22 @@
+= stylesheet_link_tag "/stylesheets/bootstrapValidator.min.css"
+= javascript_include_tag "/javascripts/bootstrapValidator.js"
+
+.page-header
+  %h2 Login
+
+- form_for @user, "/user/login", id: "loginForm", class: "form-horizontal", role: "form" do |f|
+  .form-group
+    = f.label :email, class: "col-lg-2 control-label"
+    .col-lg-6
+      = f.text_field :email, class: "form-control"
+  .form-group
+    = f.label :password, class: "col-lg-2 control-label"
+    .col-lg-6
+      = f.text_field :password, class: "form-control"
+  .form-group
+    .col-lg-offset-2.col-lg-4
+      = f.submit "Submit", class: "btn btn-default"
+
+= stylesheet_link_tag "bootstrapValidator.css"
+= javascript_include_tag "bootstrapValidator.js"
+= javascript_include_tag "user_login.js"

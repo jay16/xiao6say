@@ -4,8 +4,10 @@ class Cpanel::HomeController < Cpanel::ApplicationController
 
   # root page
   get "/" do
-    @cards    = Card.all
-    @messages = Message.all
+    @users     = User.all
+    @weixiners = Weixiner.all
+    @messages  = Message.all
+    @phantoms  = Phantom.all
 
     haml :index, layout: :"../layouts/layout"
   end

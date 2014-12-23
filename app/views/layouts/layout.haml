@@ -4,16 +4,16 @@
   %head
     %title= [Settings.website.title, Settings.website.slogan].join(" | ")
     %meta{"http-equiv" => "content-type", content: "text/html", charset: "UTF-8"}
-    = favicon_link_tag Settings.website.favicon
-    = javascript_include_tag "/javascripts/jquery-2.1.1.min.js"
-    = javascript_include_tag "/javascripts/bootstrap.320.min.js"
-    = javascript_include_tag "/javascripts/nprogress.js"
-    = javascript_include_tag "/javascripts/js_utils.js"
-    = javascript_include_tag "/javascripts/application.js"
-    = javascript_include_tag "/javascripts/jquery_sinatra.js"
-    = stylesheet_link_tag "/stylesheets/bootstrap.320.min.css"
-    = stylesheet_link_tag "/stylesheets/nprogress.css"
-    = stylesheet_link_tag "/stylesheets/application.css"
+    %link{href: "#{Settings.website.favicon}", rel: "shortcut icon"}
+    = javascript_include_tag "jquery-2.1.1.min.js"
+    = javascript_include_tag "bootstrap.320.min.js"
+    = javascript_include_tag "nprogress.js"
+    = javascript_include_tag "js_utils.js"
+    = javascript_include_tag "application.js"
+    = javascript_include_tag "jquery_sinatra.js"
+    = stylesheet_link_tag "bootstrap.320.min.css"
+    = stylesheet_link_tag "nprogress.css"
+    = stylesheet_link_tag "application.css"
     -if mobile? or (params = params || {} and params[:template] == "mobile_cart")
       %meta{:content => "no", :name => "apple-mobile-web-app-capable"}
       %meta{:content => "True", :name => "HandheldFriendly"}/

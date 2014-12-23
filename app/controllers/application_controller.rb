@@ -1,20 +1,15 @@
 ﻿#encoding: utf-8
-require "sinatra/decompile"
+#require "sinatra/decompile"
+#require 'sinatra/advanced_routes'
 require 'digest/md5'
-require "json"
-require 'sinatra/advanced_routes'
 class ApplicationController < Sinatra::Base
   register Sinatra::Reloader if development?
   register Sinatra::Flash
-  register Sinatra::Decompile
-  register(Sinatra::Logger)
-  # register Sinatra::AdvancedRoutes
-  # register Sinatra::Auth
+  register SinatraMore::MarkupPlugin
   
   # helpers
   helpers ApplicationHelper
   helpers HomeHelper
-  helpers Sinatra::FormHelpers
 
   # css/js/view配置文档
   use ImageHandler
@@ -50,23 +45,6 @@ class ApplicationController < Sinatra::Base
   def run_shell(cmd)
     IO.popen(cmd) { |stdout| stdout.reject(&:empty?) }.unshift($?.exitstatus.zero?)
   end 
-  # global function
-  def uuid(str)
-    str += Time.now.to_f.to_s
-    md5_key(str)
-  end
-  def md5_key(str)
-    Digest::MD5.hexdigest(str)
-  end
-  def sample_3_alpha
-    (('a'..'z').to_a + ('A'..'Z').to_a).sample(3).join
-  end
-  def regexp_ppc_order
-    @regexp_ppc_order ||= Regexp.new(Settings.regexp.order)
-  end
-  def regexp_ppc_order_item
-    @regexp_ppc_order_item ||= Regexp.new(Settings.regexp.order_item)
-  end
 
   def current_user
     @current_user ||= User.first(email: request.cookies["cookie_user_login_state"] || "")
@@ -82,7 +60,7 @@ class ApplicationController < Sinatra::Base
       response.set_cookie "cookie_before_login_path", {:value=> request.url, :path => "/", :max_age => "2592000"}
 
       flash[:notice] = "继续操作前请登录."
-      redirect "/carder/user/login", 302
+      redirect "/user/login", 302
     end
   end
 
@@ -138,9 +116,8 @@ Parameters:\n #{@params.to_s}
       body.to_str
     end
   end
-
-  def print_query_sql(collection)
-    #logger.info %Q(\nSQL:\n %s\n) % DataMapper.repository.adapter.send(:select_statement,collection.query).join(" ")
+  def md5_key(str)
+    Digest::MD5.hexdigest(str)
   end
 
   # 404 page

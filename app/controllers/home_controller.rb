@@ -4,7 +4,7 @@ class HomeController < ApplicationController
 
   # root page
   get "/" do
-    redirect "/carder" if current_user
+    redirect "/user" if current_user
     @weixiners = Weixiner.all
     @messages  = Message.all
     @phantoms  = Phantom.all
@@ -14,24 +14,16 @@ class HomeController < ApplicationController
 
   # redirect to cpanel
   get "/admin" do
-    redirect "/carder"
-  end
-
-  # weixin auto response
-  # download vcf file
-  get "/vcf/*.*" do |base_name, ext|
-    vcf_name = [base_name, ext].join(".") 
-    vcf_path = File.join(ENV["APP_ROOT_PATH"], "public/vcfs", vcf_name)
-    send_file(vcf_path, :filename => vcf_name)
+    redirect "/cpanel"
   end
 
   # redirect
   # login
   get "/login" do
-    redirect "/carder/user/login"
+    redirect "/user/login"
   end
   # register
   get "/register" do
-    redirect "/carder/user/register"
+    redirect "/user/register"
   end
 end

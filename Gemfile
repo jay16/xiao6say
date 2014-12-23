@@ -10,8 +10,12 @@ end
 gem "sinatra", "~>1.4.5"
 gem "sinatra-contrib", "~>1.4.2"
 gem "sinatra-flash", "~>0.3.0"
-gem "sinatra-advanced-routes", :require => "sinatra/advanced_routes"
-gem "sinatra-logger", "~>0.1.1"
+
+gem "actionmailer"
+gem "warden", "~>1.2.3"
+gem "sinatra_more", "~>0.3.43"
+#gem "sinatra-advanced-routes", :require => "sinatra/advanced_routes"
+#gem "sinatra-logger", "~>0.1.1"
 # This project is now part of sinatra-contrib.
 # gem "sinatra-reloader" 
 
@@ -24,28 +28,18 @@ gem "dm-timestamps", "~>1.2.0"
 gem "dm-sqlite-adapter", "~>1.2.0"
 
 #assets
+gem "rake", "~>10.3.2"
 gem "json"
 gem "haml", "~> 4.0.5"
 gem "sass", "~>3.3.7"
 gem "therubyracer", "~>0.12.1"
 gem "coffee-script", "~>2.2.0"
 
-#gem "passenger", "~>4.0.53"
-#gem "thin", "~>1.6.2"
 gem "unicorn", "~>4.8.3"
-gem "capistrano", "~>2.15.5"
-gem "rake", "~>10.3.2"
 gem "settingslogic", "~>2.0.9"
 #gem "rest-client", "~>1.7.2"
 
-#代码覆盖率
-#rake stats
-
-# for erb operation
-gem "tilt", "~>1.4.1"
-
 group :development do
-  gem "qiniu", "~>6.3.2"
   gem "net-ssh", "~>2.7.0"
   gem "net-scp", "~>1.2.1"
 end

@@ -1,0 +1,29 @@
+-#encoding: utf-8
+
+.row
+  %h1 整体概况
+
+.row{style: "margin-top: 5px; background: white;"}
+  %table.table.table-striped.table-condensed
+    %thead
+      %tr
+        %th 名称
+        %th 数量
+        %th 备注
+    %tbody
+      %tr
+        %td 用户
+        %td= @users.count
+        %td
+      %tr
+        %td 微信用户 
+        %td= @weixiners.count
+        %td
+      %tr
+        %td 微信消息
+        %td= @messages.count
+        %td
+      %tr
+        %td 词义解析
+        %td= @phantoms.count
+        %td

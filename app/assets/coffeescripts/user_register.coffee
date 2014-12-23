@@ -33,19 +33,19 @@ $(document).ready ->
           remote:
             type: "post"
             delay: true
-            url: "/carder/user/check_email_exist"
+            url: "/user/check_email_exist"
             message: "该邮箱已被注册"
       "user[password]":
         validators:
           notEmpty:
             message: "登陆密码为必填项."
           identical:
-            field: "confirm_password"
+            field: "user[confirm_password]"
             message: "登陆密码与确认密码不一致."
           different:
             field: "user[name]"
             message: "登陆密码不可以与用户名称相同."
-      confirm_password:
+      "user[confirm_password]":
         validators:
           notEmpty:
             message: "确认密码为必填项."

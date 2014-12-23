@@ -2,8 +2,7 @@
 @app_routes_map = {
   "/"            => "HomeController",
   "/weixin"      => "WeixinController",
-  "/carder"      => "Carder::HomeController",
-  "/carder/user" => "Carder::UserController",
+  "/user"        => "UserController",
   "/cpanel"      => "Cpanel::HomeController"
 }
 

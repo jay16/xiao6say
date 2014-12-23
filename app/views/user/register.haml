@@ -1,0 +1,27 @@
+.page-header
+  %h2 Register
+
+- form_for @user, "/user/register", id: "registerForm", class: "form-horizontal", role: "form" do |f|
+  .form-group
+    = f.label :name, class: "col-lg-2 control-label"
+    .col-lg-6
+      = f.text_field :name, class: "form-control"
+  .form-group
+    = f.label :email, class: "col-lg-2 control-label"
+    .col-lg-6
+      = f.text_field :email, class: "form-control"
+  .form-group
+    = f.label :password, class: "col-lg-2 control-label"
+    .col-lg-6
+      = f.text_field :password, class: "form-control"
+  .form-group
+    = f.label :password_confirmation, class: "col-lg-2 control-label"
+    .col-lg-6
+      = f.text_field :password_confirmation, class: "form-control"
+  .form-group
+    .col-lg-offset-2.col-lg-4
+      = f.submit "Submit", class: "btn btn-default"
+
+= stylesheet_link_tag "bootstrapValidator.css"
+= javascript_include_tag "bootstrapValidator.js"
+= javascript_include_tag "user_register.js"
