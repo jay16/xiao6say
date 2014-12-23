@@ -13,6 +13,10 @@ class Message # 微信消息
     # debug it without below two
     property :create_time    , String#  , :required => true
     property :msg_id         , String#  , :required => true
+    # voice
+    property :media_id       , String
+    property :format         , String
+    property :recognition    , Text
     # text
     property :content        , Text
     # image

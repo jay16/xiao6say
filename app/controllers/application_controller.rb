@@ -26,6 +26,11 @@ class ApplicationController < Sinatra::Base
   enable :sessions, :logging, :dump_errors, :raise_errors, :static, :method_override
 
   before do
+    @request_body = request_body
+    request_hash = JSON.parse(@request_body) rescue {}
+    @params = params.merge(request_hash)
+    @params = @params.merge({ip: remote_ip, browser: remote_browser})
+
     print_format_logger
   end
 
@@ -91,29 +96,14 @@ class ApplicationController < Sinatra::Base
   end
 
   def print_format_logger
-    hash = params || {}
-    info = {:ip => remote_ip, :browser => remote_browser}
-    #unless hash.empty? 
-    #  model = grep_params_model(hash)
-    #  hash[model] = hash.fetch(model).merge(info) if model
-    #end
-    params = hash.merge(info)
-    logger.info %Q{
-    #{request.request_method} #{request.path} for #{request.ip} at #{Time.now.to_s}
-    Parameters:\n #{params.to_s}
-    Request:\n #{request_body if request.body}
+    request_info = @request_body ? %Q{Request:\n #{@request_body }} : ""
+    log_info = %Q{
+#{request.request_method} #{request.path} for #{request.ip} at #{Time.now.to_s}
+Parameters:\n #{@params.to_s}
+#{request_info}
     }
-    #puts self.class.name
-    #self.class.routes.each do |array|
-    #  verb, *array = array
-    #  puts "verb: %s" % verb
-    #  array.each do |arr|
-    #    logger.info "\tpath: %s" % arr.first
-    #  end
-    #end
-    #@@app_routes_map.each_pair do |path, mod|
-    #  clazz = mod.split("::").inject(Object) {|o,c| o.const_get c}
-    #end
+    puts log_info
+    logger.info log_info
   end
 
   # 遍历params寻找二级hash

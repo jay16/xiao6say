@@ -23,10 +23,10 @@ class WeixinController < ApplicationController
   post "/" do
     return if generate_signature != params[:signature]
 
-    raw_message = request_body(@request_body)
-    weixin = message_receiver(raw_message)
-    _params = weixin.instance_variables.inject({}) do |hash, var|
-      hash.merge!({var.to_s.sub(/@/,"") => weixin.instance_variable_get(var)})
+    raw_message = @request_body
+    _message = message_receiver(raw_message)
+    _params = _message.instance_variables.inject({}) do |hash, var|
+      hash.merge!({var.to_s.sub(/@/,"") => _message.instance_variable_get(var)})
     end
     _params[:from_user_name] = _params.delete("user")
     _params[:to_user_name]   = _params.delete("robot")
