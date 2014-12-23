@@ -363,7 +363,8 @@ int main(int argc, char *argv[])
         szTemp[MAX_INPUT_LEN-1] = '\0';
         if (process(szTemp) == SUCCESS)
             //printf("[%s] - Money:[%d],Time:[%d]\n\n", szTemp,g_nMoney,g_nTime);
-            printf("{\"Type\":\"%s\",\"Money\": \"%d\",\"Time\":\"%d\"}\n", g_szType,g_nMoney,g_nTime);
+            printf("{\"Remain\":\"%s\",\"Type\":\"%s\",\"Money\": \"%d\",\"Time\":\"%d\"}\n", 
+                g_szRemain,g_szType,g_nMoney,g_nTime);
         else
             printf("{\"error\": \"process failed\"}\n");
     }

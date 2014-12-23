@@ -14,6 +14,9 @@ else
     ENVIRONMENT="$3"
 fi
 
+echo "recompile phantom's C codes."
+cd lib/utils/recognizer && gcc processPattern.c -o processPattern
+
 echo "port: ${PORT} environment: ${ENVIRONMENT}"
 UNICORN=unicorn  
 CONFIG_FILE=config/unicorn.rb  
@@ -37,3 +40,4 @@ case "$1" in
         exit 3  
         ;;  
 esac  
+
