@@ -365,7 +365,7 @@ int main(int argc, char *argv[])
             //printf("[%s] - Money:[%d],Time:[%d]\n\n", szTemp,g_nMoney,g_nTime);
             printf("{\"Type\":\"%s\",\"Money\": \"%d\",\"Time\":\"%d\"}\n", g_szType,g_nMoney,g_nTime);
         else
-            printf("{'error': 'process failed'}\n");
+            printf("{\"error\": \"process failed\"}\n");
     }
 
     if ((fp=fopen(INPUT_FILE,"r")) != NULL) {
