@@ -12,6 +12,20 @@ class Phantom
 
     belongs_to :message, :required => false
 
+    def process
+      result = ""
+      begin
+        hash = ::JSON.parse(self.json) 
+      rescue => e
+        puts e.message
+        hash = {error: "json error"}
+      end
+      hash.each_pair do |key, value|
+        result += "%s: %s\n" % [key, value]
+      end
+      result += "\n请输入0(错误)或1(正确)对解析结果判断."
+      return result
+    end
     # instance methods
     def human_name
       "解析结果"

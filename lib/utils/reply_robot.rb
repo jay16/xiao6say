@@ -60,14 +60,10 @@ module Sinatra
         when "voice" then
           result = "您说:\n%s\n" % @message.recognition.force_encoding('UTF-8')
           result += "分解:\n"
-          begin
-            hash = ::JSON.parse(@message.phantom.json) 
-          rescue => e
-            puts e.message
-            hash = {error: "json error"}
-          end
-          hash.each_pair do |key, value|
-            result += "%s: %s" % [key, value]
+          if phantom = @message.phantom
+            result += phantom.process
+          else
+            result += "未创建"
           end
           return result
         when "text"  then 
