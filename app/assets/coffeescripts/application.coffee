@@ -8,6 +8,7 @@ window.App =
   hideLoading:->
     $(".loading").addClass("hidden")
     $(".loading").html("loading...")
+
   # checkbox operation
   checkboxState: (self) ->
     state = $(self).attr("checked")
@@ -131,3 +132,9 @@ $ ->
   NProgress.set(0.8)
   App.initBootstrapNavbarLi()
   NProgress.done(true)
+
+  $("input[type=checkbox]").bind "change", ->
+    if App.checkboxState(this)
+      App.checkboxUnChecked(this)
+    else
+      App.checkboxChecked(this)

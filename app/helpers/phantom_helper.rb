@@ -1,6 +1,6 @@
 module PhantomHelper
-  def keywords(str)
-    hash = JSON.parse(str)
-    (hash.keys + hash.values).uniq.join(",")
+  def keywords(phantom)
+    hash = JSON.parse(phantom.json)
+    (hash.keys + hash.values).uniq.push(phantom.yn_human).join(",")
   end
 end

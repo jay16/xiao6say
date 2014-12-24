@@ -26,12 +26,30 @@
           return $(".search-result").text(text);
         });
       }
+    },
+    "export": function() {
+      var status, url;
+      status = [0, 0, 0];
+      $("#export input[type=checkbox]").each(function() {
+        var index;
+        index = $(this).data("index");
+        if (App.checkboxState(this)) {
+          return status[index] = 1;
+        } else {
+          return status[index] = 0;
+        }
+      });
+      url = window.location.pathname + "/export?yn=" + status.join("");
+      return $("#exportBtn").attr("href", url);
     }
   };
 
   $(function() {
-    return $('input#search').bind("change keyup input", function() {
+    $("input#search").bind("change keyup input", function() {
       return Phantom.search(this);
+    });
+    return $("#export input[type=checkbox]").bind("change", function() {
+      return Phantom["export"]();
     });
   });
 

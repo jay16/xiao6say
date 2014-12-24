@@ -146,7 +146,14 @@
     App.initBootstrapTooltip();
     NProgress.set(0.8);
     App.initBootstrapNavbarLi();
-    return NProgress.done(true);
+    NProgress.done(true);
+    return $("input[type=checkbox]").bind("change", function() {
+      if (App.checkboxState(this)) {
+        return App.checkboxUnChecked(this);
+      } else {
+        return App.checkboxChecked(this);
+      }
+    });
   });
 
 }).call(this);

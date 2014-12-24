@@ -35,7 +35,15 @@ class Phantom
       end
     end
 
-    # instance methods
+    def yn_human
+      case self.yn
+      when "1" then "正确"
+      when "0" then "错误"
+      else "未决"
+      end
+    end
+
+    # ins1tance methods
     def human_name
       "解析结果"
     end

@@ -12,4 +12,3 @@ bundle exec rake remote:deploy
 ## TODO
 
   1. C function extern into Ruby
-  2. cpanel page view

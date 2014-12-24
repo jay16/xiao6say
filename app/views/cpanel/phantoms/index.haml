@@ -1,7 +1,9 @@
 -#encoding: utf-8
 .row{style: "height:70px;"}
   .col-lg-4
-    %h1 例句 
+    %h1{style: "display: inline-block;"}例句 
+    %button.btn.btn-default.btn-sm{style:"margin-bottom:15px;","data-target" => "#exportphantom", "data-toggle" => "modal", :type => "button"}
+      导出 
   .col-lg-4{style: "height:100%;"}
     %div.search-result{style: "height:100%;margin-top:35px;text-align:right;"}
   .col-lg-4{style: "height:100%;margin-top:25px;"}
@@ -14,6 +16,7 @@
   .table .tv {
     text-align: center;
     vertical-align: middle;
+    max-width: 20px;
   }
 .row{style: "margin-top: 5px; background: white;"}
   %table.table.table-striped.table-condensed
@@ -21,16 +24,39 @@
       %tr
         %th 序号
         %th 例句/分解
-        %th 解析
-        %th 删除
+        %th 判断
     %tbody
       - @phantoms.each_with_index do |phantom, index|
         %tr.tr-row{class: "row-#{index}"}
           %td.tv{rowspan: "2"}= index + 1
-          %td= phantom.raw_text 
-          %td= link_to "解析"
-          %td= link_to "删除"
-        %tr.tr-row{class: "#{phantom.style}"}
-          %td.phantom{colspan: "3", class: "row-#{index}", "data-index" => index, "data-keywords" => "#{keywords(phantom.json)}"}= phantom.json 
+          %td= phantom.raw_text
+          %td= phantom.yn_human
+        %tr.tr-row{class: "#{phantom.style} row-#{index}"}
+          %td.phantom{colspan: "2","data-index" => index, "data-keywords" => "#{keywords(phantom)}"}= phantom.json 
 
 = javascript_include_tag "phantom.js"
+
+/ Modal
+#exportphantom.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "exportphantomLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} &times;
+          %span.sr-only Close
+        %h4#exportphantomLabel.modal-title 导出例句
+      .modal-body
+        %table.table.table-condensed#export{style: "margin:auto 20px;"}
+          %tbody
+            %tr
+              %td
+                %input{"data-index" => "0", :type => "checkbox", :checked => true} 正确
+            %tr
+              %td 
+                %input{"data-index" => "1", :type => "checkbox", :checked => true} 错误
+            %tr
+              %td
+                %input{"data-index" => "2", :type => "checkbox", :checked => true} 未决
+      .modal-footer
+        %a.btn.btn-default{"data-dismiss" => "modal", :type => "button"} 取消 
+        %a#exportBtn.btn.btn-primary{:href=> "/cpanel/phantoms/export?yn=111"} 提交
