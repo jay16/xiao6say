@@ -30,7 +30,8 @@
         %tr.tr-row{class: "row-#{index}"}
           %td.tv{rowspan: "2"}= index + 1
           %td= phantom.raw_text
-          %td= phantom.yn_human
+          %td
+            %span.label{class: "label-#{phantom.style}"}= phantom.yn_human
         %tr.tr-row{class: "#{phantom.style} row-#{index}"}
           %td.phantom{colspan: "2","data-index" => index, "data-keywords" => "#{keywords(phantom)}"}= phantom.json 
 

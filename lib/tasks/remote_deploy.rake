@@ -8,8 +8,9 @@ namespace :remote do
   end
 
   def execute!(ssh, command)
+    puts "\t`%s`" % command
     ssh.exec!(command) do  |ch, stream, data|
-      puts "%s:\n%s" % [stream, encode(data)]
+      puts "\t\t%s:\n\t\t%s" % [stream, encode(data)]
     end
   end
 
@@ -46,8 +47,15 @@ namespace :remote do
       File.delete(local_db_path) if File.exist?(local_db_path)
       ssh.scp.download!(remote_db_path, local_db_path)
 
-      puts "restart unicorn"
-      command = "cd %s && su - root -l -c '/bin/sh unicorn.sh restart'" % remote_root_path
+      puts "bundle --local"
+      command = "cd %s && bundle --local" % remote_root_path
+      execute!(ssh, command)
+
+      puts "stop unicorn"
+      command = "cd %s && /bin/sh unicorn.sh stop" % remote_root_path
+      execute!(ssh, command)
+      puts "start unicorn"
+      command = "cd %s && /bin/sh unicorn.sh start" % remote_root_path
       execute!(ssh, command)
     end
   end

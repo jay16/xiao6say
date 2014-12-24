@@ -1,28 +1,17 @@
 #!/bin/sh  
 # 
-
-if test -z "$2"
-then
-    PORT=3456
-else
-    PORT=$2
-fi
-if test -z "$3"
-then
-    ENVIRONMENT="production"
-else
-    ENVIRONMENT="$3"
-fi
-
-CURRENT_PWD=$(pwd)
-echo "recompile phantom's C codes."
-cd lib/utils/recognizer && gcc processPattern.c -o processPattern
-cd ${CURRENT_PWD}
+PORT=$(test -z "$2" && echo "3456" || echo "$2")
+ENVIRONMENT=$(test -z "$3" && echo "production" || echo "$3")
 
 echo "port: ${PORT} environment: ${ENVIRONMENT}"
 UNICORN=unicorn  
 CONFIG_FILE=config/unicorn.rb  
-  
+ 
+APP_ROOT_PATH=$(pwd)
+echo "recompile phantom's C codes."
+cd lib/utils/recognizer && gcc processPattern.c -o processPattern
+cd ${APP_ROOT_PATH}
+
 case "$1" in  
     start)  
         test -d log || mkdir log
@@ -37,9 +26,11 @@ case "$1" in
     restart|force-reload)  
         kill -USR2 `cat tmp/pids/unicorn.pid`  
         ;;  
+    deploy)
+        echo "RACK_ENV=production bundle exec rake remote:deploy"
+        ;;
     *)  
-        echo "Usage: $SCRIPTNAME {start|stop|restart|force-reload}" >&2  
+        echo "Usage: $SCRIPTNAME {start|stop|restart|force-reload|deploy}" >&2  
         exit 3  
         ;;  
 esac  
-

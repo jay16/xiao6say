@@ -34,9 +34,9 @@ before_fork do |server, worker|
     end  
   end  
   
-  #DataObjects::Pooling.pools.each do |pool|
-  #  pool.dispose
-  #end
+  DataObjects::Pooling.pools.each do |pool|
+    pool.dispose
+  end
 end
 
 #before_fork do |server, worker|
