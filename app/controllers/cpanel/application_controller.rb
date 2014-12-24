@@ -3,6 +3,6 @@ module Cpanel; end
 class Cpanel::ApplicationController < ApplicationController
   before do
     authenticate!
-    redirect "/user" unless current_user.admin?
+    redirect "/user" unless current_user and current_user.admin?
   end
 end

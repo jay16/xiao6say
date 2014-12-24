@@ -4,6 +4,9 @@ class UserController < ApplicationController
   set :layout, :"../layouts/layout"
 
   get "/" do
+    redirect "/user/login" unless current_user
+    redirect "/cpanel" if current_user and current_user.admin?
+
     @weixiners = Weixiner.all
     @messages  = Message.all
     @phantoms  = Phantom.all
@@ -26,7 +29,7 @@ class UserController < ApplicationController
       response.set_cookie "cookie_user_login_state", {:value=> user.email, :path => "/", :max_age => "2592000"}
 
       flash[:success] = "登陆成功"
-      redirect request.cookies["cookie_before_login_path"] || "/carder"
+      redirect request.cookies["cookie_before_login_path"] || "/user"
     else
       response.set_cookie "cookie_user_login_state", {:value=> "", :path => "/", :max_age => "2592000"}
       response.set_cookie "_email", {:value=> params[:user][:email], :path => "/", :max_age => "2592000"}

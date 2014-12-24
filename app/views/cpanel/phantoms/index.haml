@@ -1,0 +1,36 @@
+-#encoding: utf-8
+.row{style: "height:70px;"}
+  .col-lg-4
+    %h1 例句 
+  .col-lg-4{style: "height:100%;"}
+    %div.search-result{style: "height:100%;margin-top:35px;text-align:right;"}
+  .col-lg-4{style: "height:100%;margin-top:25px;"}
+    %div.input-group{style:"max-width:400px;"}
+      %input#search.form-control{:placeholder => "输入关键字", :type => "text"}
+      %span.input-group-btn
+        %button.btn.btn-default{type:"button", onclick:"Phantom.search('#search');"}
+          %span.glyphicon.glyphicon-search
+:css
+  .table .tv {
+    text-align: center;
+    vertical-align: middle;
+  }
+.row{style: "margin-top: 5px; background: white;"}
+  %table.table.table-striped.table-condensed
+    %thead
+      %tr
+        %th 序号
+        %th 例句/分解
+        %th 解析
+        %th 删除
+    %tbody
+      - @phantoms.each_with_index do |phantom, index|
+        %tr.tr-row{class: "row-#{index}"}
+          %td.tv{rowspan: "2"}= index + 1
+          %td= phantom.raw_text 
+          %td= link_to "解析"
+          %td= link_to "删除"
+        %tr.tr-row{class: "#{phantom.style}"}
+          %td.phantom{colspan: "3", class: "row-#{index}", "data-index" => index, "data-keywords" => "#{keywords(phantom.json)}"}= phantom.json 
+
+= javascript_include_tag "phantom.js"

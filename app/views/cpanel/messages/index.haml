@@ -1,0 +1,20 @@
+-#encoding: utf-8
+
+.row
+  %h1 微信消息 
+
+.row{style: "margin-top: 5px; background: white;"}
+  %table.table.table-striped.table-condensed
+    %thead
+      %tr
+        %th 微信id
+        %th 消息数量
+        %th 例句数量 
+        %th 关注状态
+    %tbody
+      - @weixiners.each do |weixiner|
+        %tr
+          %td= weixiner.uid
+          %td= weixiner.messages.count
+          %td TODO
+          %td= weixiner.status
