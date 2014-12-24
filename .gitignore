@@ -14,11 +14,10 @@ config/*.yaml
 
 
 # 项目本地文件夹
-shared/
-log/
-db/
-tmp/
-vendor/
+/log/
+/db/
+/tmp/
+/vendor/
 .sass-cache/
 
 # 数据库/log文件
