@@ -37,7 +37,7 @@ gem "coffee-script", "~>2.2.0"
 
 gem "unicorn", "~>4.8.3"
 gem "settingslogic", "~>2.0.9"
-#gem "rest-client", "~>1.7.2"
+gem "rest-client", "~>1.7.2"
 
 group :development do
   gem "net-ssh", "~>2.7.0"

@@ -3,7 +3,6 @@ require "rubygems"
 root_path = File.dirname(File.dirname(__FILE__))#File.expand_path("../../", __FILE__)
 ENV["APP_NAME"]  ||= "xiao6say"
 ENV["RACK_ENV"]  ||= "development"
-ENV["ASSET_CDN"] ||= "false"
 ENV["VIEW_PATH"]  = "%s/app/views" % root_path
 ENV["APP_ROOT_PATH"] = root_path
 
@@ -30,7 +29,7 @@ status, *result = run_command("whoami")
 if result[0].strip == "root"
   system("chown -R nobody:nobody #{root_path} && chmod -R 777 #{root_path}")
 else
-  warn "warning: [#{result[0].strip}] can't execute chown/chmod"
+  warn "\twarning: [#{result[0].strip}] can't execute chown/chmod"
 end
 
 # 扩充require路径数组
