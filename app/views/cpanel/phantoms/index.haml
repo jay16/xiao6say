@@ -34,7 +34,7 @@
           %td
             %span.label{class: "label-#{phantom.style}"}= phantom.yn_human
           %td
-            = link_to "process", "javascript:void(0);", onclick: "Phantom.process(%d);" % phantom.id, class: "btn btn-primary btn-sm"
+            = link_to "process", "javascript:void(0);", onclick: "Phantom.process(%d);" % phantom.id, class: "btn btn-link", style: "padding: 0px;"
         %tr.tr-row{class: "#{phantom.style} row-#{index}"}
           %td.phantom{colspan: "3","data-index" => index, "data-keywords" => "#{keywords(phantom)}"}= phantom.json 
 

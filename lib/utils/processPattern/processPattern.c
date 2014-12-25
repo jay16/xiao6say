@@ -369,7 +369,7 @@ int main(int argc, char *argv[])
             printf("{\"Remain\":\"%s\",\"Type\":\"%s\",\"Money\": \"%d\",\"Time\":\"%d\"}\n", 
                 g_szRemain,g_szType,g_nMoney,g_nTime);
         else
-            printf("{\"error\": \"解析失败\"}\n");
+            printf("{\"error\": \"代码盲区\"}\n");
     }
 
     if ((fp=fopen(INPUT_FILE,"r")) != NULL) {
