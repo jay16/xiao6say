@@ -50,6 +50,34 @@
       });
       url = window.location.pathname + "/export?yn=" + status.join("");
       return $("#exportBtn").attr("href", url);
+    },
+    process: function(id) {
+      var date_begin, date_end, search_duration;
+      date_begin = new Date();
+      $("#processModal").modal("show");
+      $("#phantom_id").attr("value", id);
+      $.ajax({
+        type: "post",
+        url: "/cpanel/phantoms/process",
+        data: {
+          "id": id
+        },
+        dataType: "json",
+        success: function(data) {
+          var string;
+          string = JSON.stringify(data);
+          $(".process-result").html(string);
+          $("#phantom_json").attr("value", string);
+          return $("#processBtn").removeAttr("disabled");
+        },
+        error: function() {
+          $(".process-result").html("ajax错误");
+          return $("#processBtn").attr("disabled", "disabled");
+        }
+      });
+      date_end = new Date();
+      search_duration = (date_end.getTime() - date_begin.getTime()) / 1000;
+      return $(".process-duration").html("用时" + search_duration + "秒");
     }
   };
 

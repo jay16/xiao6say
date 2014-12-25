@@ -42,8 +42,17 @@ class ApplicationController < Sinatra::Base
   def remote_browser
     request.user_agent
   end
-  def run_shell(cmd)
-    IO.popen(cmd) { |stdout| stdout.reject(&:empty?) }.unshift($?.exitstatus.zero?)
+  def run_shell(shell, whether_show_log=true)
+    _result = IO.popen(shell) do |stdout| 
+      stdout.reject(&:empty?) 
+    end.unshift($?.exitstatus.zero?)
+    if true or !_result[0] or whether_show_log
+      _shell  = shell.gsub(ENV["APP_ROOT_PATH"], "=>").split(/\n/).map { |line| "\t`" + line + "`" }.join("\n")
+      _status = _result[0]
+      _res    = _result.length > 1 ? _result[1..-1].map { |line| "\t\t" + line }.join  : "\t\tbash: no output."
+      puts "%s\n\t\t==> %s\n%s\n" % [_shell, _status, _res]
+    end
+    return _result
   end 
 
   def current_user
@@ -84,19 +93,6 @@ Parameters:\n #{@params.to_s}
     logger.info log_info
   end
 
-  # 遍历params寻找二级hash
-  def grep_params_model(hash)
-    models  = %w[user package order track campaign]
-    model = hash.inject([]) do |sum, _hash|
-      key, value = _hash
-      sum.push(key) if key and value.is_a?(Hash)
-      sum
-    end.uniq.first
-    if model and models.include?(model)
-      return model
-    end
-  end
-
   def request_body(body = request.body)
     @request_body = case body
     when StringIO then body.string
@@ -116,8 +112,16 @@ Parameters:\n #{@params.to_s}
       body.to_str
     end
   end
+
   def md5_key(str)
     Digest::MD5.hexdigest(str)
+  end
+
+  def respond_with_json hash, code = nil
+    raise "code is necessary!" unless hash.has_key?(:code)
+    content_type "application/json"
+    body   hash.to_json
+    status code || 200
   end
 
   # 404 page

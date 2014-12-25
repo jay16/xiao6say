@@ -34,6 +34,7 @@ window.Phantom=
 
         $(".search-result").text(text)
 
+  # export weixin example sentences 
   export: ->
     status = [0,0,0]
     $("#export input[type=checkbox]").each ->
@@ -42,10 +43,32 @@ window.Phantom=
         status[index] = 1
       else
         status[index] = 0
-    # url = window.location.protocol + "//" + window.location.host + 
-    # window.open(url,'newwindow','height=100,width=400,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no')
     url = window.location.pathname + "/export?yn=" + status.join("")
     $("#exportBtn").attr("href", url)
+
+  # re process text str with phantom's code
+  process: (id) ->
+    date_begin = new Date()
+    $("#processModal").modal("show")
+    $("#phantom_id").attr("value", id)
+    $.ajax(
+      type: "post"
+      url: "/cpanel/phantoms/process"
+      data: { "id": id }
+      dataType: "json"
+      success: (data) ->
+        string = JSON.stringify(data)
+        $(".process-result").html(string)
+        $("#phantom_json").attr("value", string)
+        $("#processBtn").removeAttr("disabled")
+      error: ->
+        $(".process-result").html("ajax错误")
+        $("#processBtn").attr("disabled", "disabled")
+    );
+    
+    date_end = new Date()
+    search_duration = (date_end.getTime() - date_begin.getTime())/1000
+    $(".process-duration").html("用时" + search_duration+ "秒")
 
 $ ->
   # detect the change

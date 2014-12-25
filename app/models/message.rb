@@ -44,7 +44,7 @@ class Message # 微信消息
     after :save do |message|
       # 语音文字 => 词义解析 
       recognition = message.recognition 
-       recognition = "学习英语四十分钟"
+      # recognition = "学习英语四十分钟"
       if message.msg_type == "voice" and recognition.length > 0
         result = recognition.process_pattern rescue [false, '{"error": "执行失败"}']
         phantom = Phantom.new({

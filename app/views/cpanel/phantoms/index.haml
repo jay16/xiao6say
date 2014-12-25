@@ -2,7 +2,7 @@
 .row{style: "height:70px;"}
   .col-lg-4
     %h1{style: "display: inline-block;"}例句 
-    %button.btn.btn-default.btn-sm{style:"margin-bottom:15px;","data-target" => "#exportphantom", "data-toggle" => "modal", :type => "button"}
+    %button.btn.btn-default.btn-sm{style:"margin-bottom:15px;","data-target" => "#exportPhantom", "data-toggle" => "modal", :type => "button"}
       导出 
   .col-lg-4{style: "height:100%;"}
     %div.search-result{style: "height:100%;margin-top:35px;text-align:right;"}
@@ -25,20 +25,23 @@
         %th 序号
         %th 例句/分解
         %th 判断
+        %th 操作
     %tbody
       - @phantoms.each_with_index do |phantom, index|
-        %tr.tr-row{class: "row-#{index}"}
+        %tr.tr-row{class: "row-#{index}", id: phantom.id}
           %td.tv{rowspan: "2"}= index + 1
           %td= phantom.raw_text
           %td
             %span.label{class: "label-#{phantom.style}"}= phantom.yn_human
+          %td
+            = link_to "process", "javascript:void(0);", onclick: "Phantom.process(%d);" % phantom.id, class: "btn btn-primary btn-sm"
         %tr.tr-row{class: "#{phantom.style} row-#{index}"}
-          %td.phantom{colspan: "2","data-index" => index, "data-keywords" => "#{keywords(phantom)}"}= phantom.json 
+          %td.phantom{colspan: "3","data-index" => index, "data-keywords" => "#{keywords(phantom)}"}= phantom.json 
 
 = javascript_include_tag "phantom.js"
 
 / Modal
-#exportphantom.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "exportphantomLabel", :role => "dialog", :tabindex => "-1"}
+#exportPhantom.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "exportphantomLabel", :role => "dialog", :tabindex => "-1"}
   .modal-dialog
     .modal-content
       .modal-header
@@ -61,3 +64,39 @@
       .modal-footer
         %a.btn.btn-default{"data-dismiss" => "modal", :type => "button"} 取消 
         %a#exportBtn.btn.btn-primary{:href=> "/cpanel/phantoms/export?yn=111"} 提交
+
+/ Modal
+#processModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "exportphantomLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} &times;
+          %span.sr-only Close
+        %h4.modal-title 词义解析
+      .modal-body
+        - form_tag "/cpanel/phantoms",{class: "form-horizontal", role: "form"} do
+          - field_set_tag do
+            = hidden_field_tag "id", id: "phantom_id"
+            = hidden_field_tag "phantom[json]", id: "phantom_json"
+          %table.table.table-condensed#process{style: "margin:auto 20px;"}
+            %tbody
+              %tr
+                %td 耗时
+                %td.process-duration
+                  处理中...
+              %tr
+                %td 结果
+                %td.process-result
+                  处理中...
+              %tr
+                %td 判断
+                %td 
+                  %input{:type => "radio", :value => "1", :name => "yn", :checked => true} 
+                  正确
+                  %input{:type => "radio", :value => "0", :name => "yn"}
+                  错误
+
+          .modal-footer
+            %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} 取消 
+            %button.btn.btn-primary#processBtn{:type => "submit"} 提交

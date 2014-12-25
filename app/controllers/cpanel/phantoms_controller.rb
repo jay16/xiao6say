@@ -12,7 +12,7 @@ class Cpanel::PhantomsController < Cpanel::ApplicationController
   end
 
   get "/export" do
-    yn = params[:yn] || "111"
+    yn = @params[:yn] || "111"
     @phantoms = Phantom.all
     @phantoms = @phantoms.find_all { |p| p.yn != "1" } if yn[0] == "0"
     @phantoms = @phantoms.find_all { |p| p.yn != "0" } if yn[1] == "0"
@@ -26,5 +26,17 @@ class Cpanel::PhantomsController < Cpanel::ApplicationController
       end
     end
     send_file(filepath, filename: filename)
+  end
+
+  # call C process Text
+  post "/process" do
+    phantom = Phantom.first(id: @params[:id])
+    phantom.raw_text.process_pattern[1] rescue '{"error": "脚本错误"}'
+  end
+
+  post "/" do
+    phantom = Phantom.first(id: @params[:id])
+    phantom.update(@params[:phantom])
+    redirect "/cpanel/phantoms#%d" % phantom.id
   end
 end
