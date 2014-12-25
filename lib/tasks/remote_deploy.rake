@@ -10,7 +10,7 @@ namespace :remote do
   def execute!(ssh, command)
     puts "\t`%s`" % command
     ssh.exec!(command) do  |ch, stream, data|
-      puts "\t\t%s:\n\t\t%s" % [stream, encode(data)]
+      puts "\t\t%s: %s" % [stream, encode(data)]
     end
   end
 
@@ -27,7 +27,7 @@ namespace :remote do
       command = "cd %s && test -d %s || git clone %s" % [_dirname, _basename, _git_url]
       execute!(ssh, command)
 
-      command = "cd %s && git reset --hard HEAD && git pull" % remote_root_path
+      command = "cd %s && git reset --hard HEAD && git pull origin master" % remote_root_path
       execute!(ssh, command)
 
       # check whether remote server exist yaml file

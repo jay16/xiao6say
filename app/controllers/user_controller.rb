@@ -49,14 +49,15 @@ class UserController < ApplicationController
   # post /user/register
   post "/register" do
     user_params = params[:user]
-    user_params.delete(:password_confirmation)
-    user_params.delete("password_confirmation")
+    user_params.delete(:confirm_password)
+    user_params.delete("confirm_password")
     user_params[:password] = md5_key(user_params[:password])
-    puts user_params
     user = User.new(user_params)
 
     if user.save
-      flash[:success] = "hi %s, 注册成功，请登陆..." % user.name
+      response.set_cookie "_email", {:value=> user.email, :path => "/", :max_age => "2592000"}
+      flash[:success] = "注册成功，请登陆."
+
       redirect "/user/login"
     else
       msg = ["注册失败:"]

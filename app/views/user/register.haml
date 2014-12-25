@@ -1,26 +1,26 @@
 .page-header
-  %h2 Register
+  %h1 注册
 
 - form_for @user, "/user/register", id: "registerForm", class: "form-horizontal", role: "form" do |f|
   .form-group
-    = f.label :name, class: "col-lg-2 control-label"
+    = f.label "用户名", class: "col-lg-2 control-label"
     .col-lg-6
       = f.text_field :name, class: "form-control"
   .form-group
-    = f.label :email, class: "col-lg-2 control-label"
+    = f.label "邮箱", class: "col-lg-2 control-label"
     .col-lg-6
       = f.text_field :email, class: "form-control"
   .form-group
-    = f.label :password, class: "col-lg-2 control-label"
+    = f.label "密码", class: "col-lg-2 control-label"
     .col-lg-6
-      = f.text_field :password, class: "form-control"
+      = f.password_field :password, class: "form-control"
   .form-group
-    = f.label :password_confirmation, class: "col-lg-2 control-label"
+    = f.label "确认密码", class: "col-lg-2 control-label"
     .col-lg-6
-      = f.text_field :password_confirmation, class: "form-control"
+      = f.password_field :confirm_password, class: "form-control"
   .form-group
     .col-lg-offset-2.col-lg-4
-      = f.submit "Submit", class: "btn btn-default"
+      = f.submit "提交", class: "btn btn-default"
 
 = stylesheet_link_tag "bootstrapValidator.css"
 = javascript_include_tag "bootstrapValidator.js"
