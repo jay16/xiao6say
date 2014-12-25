@@ -1,20 +1,29 @@
 (function() {
   window.Phantom = {
     search: function(input) {
-      var count, date_begin, keyword;
-      keyword = $(input).val();
-      if (!keyword.trim()) {
+      var count, date_begin, _keys, _keywords;
+      _keywords = $(input).val().trim();
+      if (!_keywords) {
         $(".tr-row").removeClass("hidden");
         return $(".search-result").text("");
       } else {
         date_begin = new Date();
         count = 0;
+        _keys = _keywords.split(/\s+/);
         return $(".phantom").each(function() {
-          var date_end, index, keywords, klass, search_duration, text;
-          index = $(this).data("index");
+          var date_end, index, keywords, klass, match_status, search_duration, text, _i, _key, _len;
           keywords = $(this).data("keywords");
+          index = $(this).data("index");
           klass = ".row-" + index;
-          if (keywords.indexOf(keyword) >= 0) {
+          match_status = false;
+          for (_i = 0, _len = _keys.length; _i < _len; _i++) {
+            _key = _keys[_i];
+            if (keywords.indexOf(_key) >= 0) {
+              match_status = true;
+              break;
+            }
+          }
+          if (match_status) {
             $(klass).removeClass("hidden");
             count += 1;
           } else {

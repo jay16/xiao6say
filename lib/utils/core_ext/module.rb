@@ -1,10 +1,13 @@
 module ModuleMethods
   def self.included(base)
     base.class_eval do
-      if method_defined?(:alias_method_chain)
-        location = self.method(:alias_method_chain).source_location
-        warn "Remove Method - alias_method_chain defiend in:\n%s\nand reload file in %s" % [location, __FILE__]
-        remove_method :alias_method_chain
+      [:alias_method_chain].each do |method_name|
+        next unless method_defined?(method_name)
+        location = self.method(method_name).source_location rescue next
+        next if location[0] == __FILE__
+
+        warn "Remove Method - #{method_name} defiend in:\n%s\nand reload file in \n%s" % [location, __FILE__]
+        remove_method method_name
       end
     end
   end

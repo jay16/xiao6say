@@ -1,19 +1,28 @@
 window.Phantom=
   # search tea with keywords 
   search: (input) ->
-    keyword = $(input).val()
+    _keywords = $(input).val().trim()
+
     # when keyword is empty then show normal
-    if !keyword.trim()
+    if !_keywords
       $(".tr-row").removeClass("hidden")
       $(".search-result").text("")
     else
       date_begin = new Date()
       count = 0
+      _keys = _keywords.split(/\s+/)
       $(".phantom").each ->
+        keywords = $(this).data("keywords")
         index    = $(this).data("index")
-        keywords = $(this).data("keywords") 
         klass    = ".row-" + index;
-        if keywords.indexOf(keyword) >= 0
+
+        match_status = false
+        for _key in _keys
+           if keywords.indexOf(_key) >= 0
+             match_status = true
+             break
+
+        if match_status
           $(klass).removeClass("hidden")
           count += 1
         else

@@ -9,7 +9,11 @@ CONFIG_FILE=config/unicorn.rb
  
 APP_ROOT_PATH=$(pwd)
 echo "recompile phantom's C codes."
-cd lib/utils/recognizer && gcc processPattern.c -o processPattern
+cd lib/utils/processPattern 
+gcc buildPatternHeader.c -o buildPatternHeader
+./buildPatternHeader
+gcc processPattern.c -o processPattern
+# back to app_root_path
 cd ${APP_ROOT_PATH}
 
 case "$1" in  
