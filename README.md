@@ -39,3 +39,8 @@ bundle exec rake remote:deploy
         + .bash_profile for user environment
         + .bashrc for bash environment, .bash_profile's substitute
       
+## UPDATES
+
+   1. 2014/12/26
+
+     phantom's C code update.

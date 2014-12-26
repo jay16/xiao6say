@@ -10,7 +10,7 @@ namespace :remote do
   def execute!(ssh, command)
     puts "\t`%s`" % command
     ssh.exec!(command) do  |ch, stream, data|
-      puts "\t\t%s: %s" % [stream, encode(data)]
+      puts "\t\t%s: %s" % [stream, data]#encode(data)]
     end
   end
 
@@ -54,6 +54,11 @@ namespace :remote do
       puts "stop unicorn"
       command = "cd %s && /bin/sh unicorn.sh stop" % remote_root_path
       execute!(ssh, command)
+
+      puts "rake get weixiner info"
+      command = "cd %s && RACK_ENV=production bundle exec rake weixin:user_info" % remote_root_path
+      execute!(ssh, command)
+
       puts "start unicorn"
       command = "cd %s && /bin/sh unicorn.sh start" % remote_root_path
       execute!(ssh, command)

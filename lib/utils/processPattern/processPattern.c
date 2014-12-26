@@ -1,3 +1,9 @@
+//////////////////////////////////////////////
+// File: processPattern.c
+// Description: 读入一段文字，拆出 时间 or 金额，剩下的文字做分类
+// Author: Phantom Weng
+// Date: 2014/11/27
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,11 +26,117 @@ int g_nMoney = 0;
 char g_szType[MAX_INPUT_LEN];
 char g_szRemain[MAX_INPUT_LEN];
 
+int getMinute(char *pCh)
+{
+    int num=0,nLastDigit=0;
+    char *pChStart=pCh;
+
+    debug_printf("in getMinute, pCh=[%s]\n",pCh);
+
+    if (pCh == NULL)
+        return 0;
+    
+    if (*pCh >= '1' && *pCh <= '9')
+    {
+        num = *pCh - '0';
+        pCh++;
+        if (*pCh >= '0' && *pCh <= '9') {
+            num = num * 10 + (*pCh - '0');
+            pCh++;
+        }
+        if (pCh && strncmp(pCh,"分钟",6)==0) {
+            strcpy(pChStart,pCh+6);
+            return num;
+        }
+        else if (pCh && strncmp(pCh,"分",3)==0) {
+            strcpy(pChStart,pCh+3);
+            return num;
+        }
+        else if (pCh && strncmp(pCh,"刻钟",6)==0) {
+            strcpy(pChStart,pCh+6);
+            return num*15;
+        }
+    }
+
+    if (strncmp(pCh,"一",3) == 0 || strncmp(pCh,"二",3) == 0 || strncmp(pCh,"三",3) == 0 ||
+        strncmp(pCh,"四",3) == 0 || strncmp(pCh,"五",3) == 0 || strncmp(pCh,"六",3) == 0 ||
+        strncmp(pCh,"七",3) == 0 || strncmp(pCh,"八",3) == 0 || strncmp(pCh,"九",3) == 0 ||
+        strncmp(pCh,"两",3) == 0 || strncmp(pCh,"十",3) == 0) {
+        if (strncmp(pCh,"一",3) == 0)
+            nLastDigit = 1;
+        else if (strncmp(pCh,"二",3) == 0)
+            nLastDigit = 2;
+        else if (strncmp(pCh,"三",3) == 0)
+            nLastDigit = 3;
+        else if (strncmp(pCh,"四",3) == 0)
+            nLastDigit = 4;
+        else if (strncmp(pCh,"五",3) == 0)
+            nLastDigit = 5;
+        else if (strncmp(pCh,"六",3) == 0)
+            nLastDigit = 6;
+        else if (strncmp(pCh,"七",3) == 0)
+            nLastDigit = 7;
+        else if (strncmp(pCh,"八",3) == 0)
+            nLastDigit = 8;
+        else if (strncmp(pCh,"九",3) == 0)
+            nLastDigit = 9;
+        else if (strncmp(pCh,"两",3) == 0)
+            nLastDigit = 2;
+        else if (strncmp(pCh,"十",3) == 0)
+            nLastDigit = 10;
+        pCh = pCh + 3;
+            
+        if (strncmp(pCh,"十",3) == 0) {
+            nLastDigit = nLastDigit * 10;
+            pCh = pCh + 3;
+        }
+
+        if (strncmp(pCh,"一",3) == 0)
+            nLastDigit += 1;
+        else if (strncmp(pCh,"二",3) == 0)
+            nLastDigit += 2;
+        else if (strncmp(pCh,"三",3) == 0)
+            nLastDigit += 3;
+        else if (strncmp(pCh,"四",3) == 0)
+            nLastDigit += 4;
+        else if (strncmp(pCh,"五",3) == 0)
+            nLastDigit += 5;
+        else if (strncmp(pCh,"六",3) == 0)
+            nLastDigit += 6;
+        else if (strncmp(pCh,"七",3) == 0)
+            nLastDigit += 7;
+        else if (strncmp(pCh,"八",3) == 0)
+            nLastDigit += 8;
+        else if (strncmp(pCh,"九",3) == 0)
+            nLastDigit += 9;
+        else if (strncmp(pCh,"两",3) == 0)
+            nLastDigit += 2;
+        else
+            pCh = pCh - 3; // 先减三, 反正等等要加回来
+        pCh = pCh + 3;
+
+        if (pCh && strncmp(pCh,"分钟",6)==0) {
+            strcpy(pChStart,pCh+6);
+            return nLastDigit;
+        }
+        else if (pCh && strncmp(pCh,"分",3)==0) {
+            strcpy(pChStart,pCh+3);
+            return nLastDigit;
+        }
+        else if (pCh && strncmp(pCh,"刻钟",6)==0) {
+            strcpy(pChStart,pCh+6);
+            return nLastDigit*15;
+        }
+    }        
+    return 0;
+} // end of getMinute(char *p)
+
 int process(char szParam[MAX_INPUT_LEN])
 {
     char *pCh=NULL,*pChStart=NULL;
     char szInput[MAX_INPUT_LEN];
-    int nTemp=0,nLastDigit=0,nLastQuant=0,nZeroFlag=0;
+    int nTemp=0,nLastDigit=0,nLastQuant=0,nZeroFlag=0,nLastIsTen=0;
+    float fTemp=0,fLastQuant=0;
     int nLen=0,i;
 
     strncpy(szInput,szParam,MAX_INPUT_LEN-1);
@@ -100,18 +212,21 @@ int process(char szParam[MAX_INPUT_LEN])
                 g_nTime = 240;
                 strcpy(pCh,pCh+6);
                 debug_printf("半天 - [%s]\n",szInput);
+                nTemp = 240;
                 break;
             }
             else if (strncmp(pCh+3,"个小时",9) == 0) {
                 g_nTime = 30;
                 strcpy(pCh,pCh+12);
                 debug_printf("半个小时 - [%s]\n",szInput);
+                nTemp = 30;
                 break;
             }
             else if (strncmp(pCh+3,"小时",6) == 0) {
                 g_nTime = 30;
                 strcpy(pCh,pCh+9);
                 debug_printf("半小时 = [%s]\n",szInput);
+                nTemp = 30;
                 break;
             }
             pCh = pCh+3;
@@ -122,12 +237,14 @@ int process(char szParam[MAX_INPUT_LEN])
             g_nTime = 480;
             strcpy(pCh,pCh+6);
             debug_printf("一天 - [%s]\n",szInput);
+            nTemp = 480;
             break;
         }
         else if (strncmp(pCh,"整天",6) == 0) {
             g_nTime = 480;
             strcpy(pCh,pCh+6);
             debug_printf("一天 - [%s]\n",szInput);
+            nTemp = 480;
             break;
         }
 
@@ -135,15 +252,29 @@ int process(char szParam[MAX_INPUT_LEN])
         if (*pCh >= '0' && *pCh <= '9') {
             // [0-9]+
             pChStart = pCh;
-            fflush(stdout);
             nTemp = *pCh - '0';
             pCh ++;
             while (*pCh >= '0' && *pCh <= '9') {
                 nTemp = nTemp * 10;
                 nTemp = nTemp + (*pCh - '0');
-                fflush(stdout);
                 pCh ++;
             }
+            // 处理小数点, 先转换 nTemp => fTemp, 再转换 fTemp => nTemp
+            if (*pCh == '.') {
+                fTemp = nTemp;
+                // 拿 fLastQuant 来计算小数目前为数
+                fLastQuant = 0.1;
+                pCh ++;
+                while (*pCh >= '0' && *pCh <= '9') {
+                    fTemp += (fLastQuant * (*pCh - '0'));
+                    fLastQuant /= 10;
+                    pCh ++;
+                }
+                nTemp = fTemp;
+            }
+            else
+                fTemp = 0;
+
 step_X1:
             if (strncmp(pCh,"元",3) == 0 || (strncmp(pCh,"块",3) == 0)) {
                 g_nMoney = nTemp;
@@ -153,10 +284,23 @@ step_X1:
                 break;
             }
             else if (strncmp(pCh,"小时",6) == 0) {
-                g_nTime = nTemp * 60;
+                if (fTemp > 0)
+                    g_nTime = fTemp * 60;
+                else
+                    g_nTime = nTemp * 60;
                 strcpy(pChStart,pCh+6);
                 pCh = pChStart;
                 debug_printf("xx小时 - [%s]\n",szInput);
+                // 准备处理 x个小时x分钟/刻钟
+                // 个小时后面如果接数字 or 文字 (反正顶多是几十 or 个位数)
+                // 直接在这边硬干就好
+                // 跳过【又】, 跳过【零】
+                if (pCh && ((strncmp(pCh,"又",3) == 0) || (strncmp(pCh,"零",3) == 0))) {
+                    strcpy(pChStart,pCh+3);
+                    pCh = pChStart;
+                    //pCh = pCh+3;
+                }
+                g_nTime += getMinute(pCh);
                 break;
             }
             else if (strncmp(pCh,"分钟",6) == 0) {
@@ -174,17 +318,34 @@ step_X1:
                 break;
             }
             else if (strncmp(pCh,"刻钟",6) == 0) {
-                g_nTime = nTemp * 15;
+                if (fTemp > 0)
+                    g_nTime = fTemp * 15;
+                else
+                    g_nTime = nTemp * 15;
                 strcpy(pChStart,pCh+6);
                 pCh = pChStart;
                 debug_printf("xx刻钟 - [%s]\n",szInput);
                 break;
             }
+            else if (strncmp(pCh,"个小时半",12) == 0) {
+                g_nTime = nTemp * 60 + 30;
+                strcpy(pChStart,pCh+12);
+                pCh = pChStart;
+                debug_printf("xx个半小时 - [%s]\n",szInput);
+                break;
+            }
             else if (strncmp(pCh,"个小时",9) == 0) {
-                g_nTime = nTemp * 60;
+                if (fTemp > 0)
+                    g_nTime = fTemp * 60;
+                else
+                    g_nTime = nTemp * 60;
                 strcpy(pChStart,pCh+9);
                 pCh = pChStart;
-                debug_printf("xx个小时 - [%s]\n",szInput);
+                debug_printf("xx个小时 - [%s], g_nTime=[%d]\n",szInput,g_nTime);
+                // 准备处理 x个小时x分钟/刻钟
+                // 个小时后面如果接数字 or 文字 (反正顶多是几十 or 个位数)
+                // 直接在这边硬干就好
+                g_nTime += getMinute(pCh);
                 break;
             }
             else if (strncmp(pCh,"个半小时",12) == 0) {
@@ -209,10 +370,12 @@ step_X1:
                     break;
                 }
             }
-        } // end of 4.3
+        } // end of 4.3 [0-9]+
 
         // 4.4
         nTemp = 0;
+        fTemp = 0;
+        fLastQuant = 0;
         nZeroFlag = 0;
         nLastDigit = 0;
         nLastQuant = 0;
@@ -221,7 +384,8 @@ step_4_4:
         if (strncmp(pCh,"一",3) == 0 || strncmp(pCh,"二",3) == 0 || strncmp(pCh,"三",3) == 0 ||
             strncmp(pCh,"四",3) == 0 || strncmp(pCh,"五",3) == 0 || strncmp(pCh,"六",3) == 0 ||
             strncmp(pCh,"七",3) == 0 || strncmp(pCh,"八",3) == 0 || strncmp(pCh,"九",3) == 0 ||
-            strncmp(pCh,"两",3) == 0) {
+            strncmp(pCh,"两",3) == 0 || strncmp(pCh,"十",3) == 0) {
+            nLastIsTen = 0;
             if (strncmp(pCh,"一",3) == 0)
                 nLastDigit = 1;
             else if (strncmp(pCh,"二",3) == 0)
@@ -242,8 +406,26 @@ step_4_4:
                 nLastDigit = 9;
             else if (strncmp(pCh,"两",3) == 0)
                 nLastDigit = 2;
+            else if (strncmp(pCh,"十",3) == 0) {
+                nLastDigit = 10;
+                nLastIsTen = 1;
+                nTemp += nLastDigit;
+            }
             pCh = pCh + 3;
-            
+
+            if (fLastQuant != 0) {
+                fTemp += nLastDigit * fLastQuant;
+                fLastQuant /= 10;
+            }
+          
+            // 处理 三点五 小时/分钟/刻钟
+            if (strncmp(pCh,"点",3) == 0) {
+                nTemp += nLastDigit;
+                fTemp = nTemp;
+                fLastQuant = 0.1;
+                pCh = pCh + 3;
+            }
+
             if (strncmp(pCh,"十",3) == 0) {
                 nZeroFlag = 0;
                 nLastDigit = nLastDigit * 10;
@@ -300,7 +482,7 @@ step_4_4:
                     nTemp += nLastDigit;
                 else if (nLastQuant != 0)
                     nTemp += (nLastDigit * nLastQuant / 10);
-                else
+                else if (nLastIsTen == 0)
                     nTemp += nLastDigit; 
             }
             goto step_X1;
@@ -361,20 +543,17 @@ int main(int argc, char *argv[])
     if (argc == 2) {
         strncpy(szTemp,argv[1],MAX_INPUT_LEN-1);
         szTemp[MAX_INPUT_LEN-1] = '\0';
-        //if (process(szTemp) == SUCCESS)
-        //    printf("[%s] - Money:[%d],Time:[%d]\n\n", szTemp,g_nMoney,g_nTime);
-        //else
-        //    printf("[%s] - process failed\n",argv[1]);
         if (process(szTemp) == SUCCESS)
             printf("{\"Remain\":\"%s\",\"Type\":\"%s\",\"Money\": \"%d\",\"Time\":\"%d\"}\n", 
                 g_szRemain,g_szType,g_nMoney,g_nTime);
         else
             printf("{\"error\": \"代码盲区\"}\n");
+
     }
 
     if ((fp=fopen(INPUT_FILE,"r")) != NULL) {
-        while(!feof(fp)) {
-            fgets(szTemp,MAX_INPUT_LEN-1,fp);
+        while(fgets(szTemp,MAX_INPUT_LEN-1,fp) != NULL) {
+            //fgets(szTemp,MAX_INPUT_LEN-1,fp);
             szTemp[MAX_INPUT_LEN-1] = '\0';
             // right trim
             nLen = strlen(szTemp);
@@ -387,7 +566,7 @@ int main(int argc, char *argv[])
                 printf("[%s] - Remain:[%s],Type:[%s],Money:[%d],Time:[%d]\n\n", 
                         szTemp,g_szRemain,g_szType,g_nMoney,g_nTime);
             else
-                printf("[%s] - process failed\n", szTemp);
+                printf("[%s] - process failed\n\n", szTemp);
         }
         fclose(fp);
         fp = NULL;
