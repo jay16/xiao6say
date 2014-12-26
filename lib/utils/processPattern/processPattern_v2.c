@@ -3,8 +3,6 @@
 // Description: 读入一段文字，拆出 时间 or 金额，剩下的文字做分类
 // Author: Phantom Weng
 // Date: 2014/11/27
-//
-//
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -359,9 +357,7 @@ step_X1:
             }
             else { //前面是 "花费", "花", "花了", "买"(TODO)
                 if (pChStart-szInput >= 6 && 
-                    (strncmp(pChStart-6,"花费",6) == 0 || 
-                     strncmp(pChStart-6,"花了",6) == 0 ||
-                     strncmp(pChStart-6,"用了",6) == 0)) {
+                    (strncmp(pChStart-6,"花费",6) == 0 || strncmp(pChStart-6,"花了",6) == 0)) {
                     g_nMoney = nTemp;
                     strcpy(pChStart-6,pCh);
                     pCh = pChStart-6;
@@ -500,12 +496,8 @@ step_4_4:
         strcpy(pCh,pCh+3);
 
     // 还是要把 "花费", "花", "花了" 清掉
-    pChStart ++;
-    debug_printf("pChStart=[%s],-6=[%s]\n",pChStart,pChStart-6);
     if (pChStart && pChStart-szInput >= 6 && 
-        (strncmp(pChStart-6,"花费",6) == 0 || 
-         strncmp(pChStart-6,"花了",6) == 0 ||
-         strncmp(pChStart-6,"用了",6) == 0))
+        (strncmp(pChStart-6,"花费",6) == 0 || strncmp(pChStart-6,"花了",6) == 0))
         strcpy(pChStart-6,pChStart);
     else if (pChStart && pChStart-szInput >=3 && strncmp(pChStart-3,"花",3) == 0)
         strcpy(pChStart-3,pChStart);
@@ -556,6 +548,7 @@ int main(int argc, char *argv[])
                 g_szRemain,g_szType,g_nMoney,g_nTime);
         else
             printf("{\"error\": \"代码盲区\"}\n");
+
     }
 
     if ((fp=fopen(INPUT_FILE,"r")) != NULL) {

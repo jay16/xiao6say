@@ -10,7 +10,11 @@ namespace :remote do
   def execute!(ssh, command)
     puts "\t`%s`" % command
     ssh.exec!(command) do  |ch, stream, data|
-      puts "\t\t%s: %s" % [stream, data]#encode(data)]
+      begin
+        puts "\t\t%s: %s" % [stream, data]
+      rescue
+        puts "\t\t%s: %s" % [stream, encode(data)]
+      end
     end
   end
 
