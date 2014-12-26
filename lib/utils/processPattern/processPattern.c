@@ -19,8 +19,8 @@
 
 #define INPUT_FILE              "input.txt"
 
-//#define debug_printf            printf
-#define debug_printf            
+#define debug_printf            printf
+//#define debug_printf            
 
 int g_nDateOffset = 0;
 int g_nTime = 0;
@@ -357,7 +357,8 @@ step_X1:
                 debug_printf("xx个半小时 - [%s]\n",szInput);
                 break;
             }
-            else { //前面是 "花费", "花", "花了", "买"(TODO)
+            else { //前面是 "花费", "花", "花了", "用了", "买"(TODO)
+                debug_printf("*** pChStart=[%s],pCh=[%s],\n",pChStart,pCh);
                 if (pChStart-szInput >= 6 && 
                     (strncmp(pChStart-6,"花费",6) == 0 || 
                      strncmp(pChStart-6,"花了",6) == 0 ||
@@ -365,6 +366,15 @@ step_X1:
                     g_nMoney = nTemp;
                     strcpy(pChStart-6,pCh);
                     pCh = pChStart-6;
+                    break;
+                }
+                else if (pChStart-szInput >= 7 && 
+                    (strncmp(pChStart-7,"花费",6) == 0 || 
+                     strncmp(pChStart-7,"花了",6) == 0 ||
+                     strncmp(pChStart-7,"用了",6) == 0)) {
+                    g_nMoney = nTemp;
+                    strcpy(pChStart-7,pCh-1);
+                    pCh = pChStart-7;
                     break;
                 }
                 else if (pChStart-szInput >=3 && strncmp(pChStart-3,"花",3) == 0) {
@@ -499,14 +509,18 @@ step_4_4:
     if (pCh && strncmp(pCh,"的",3) == 0)
         strcpy(pCh,pCh+3);
 
-    // 还是要把 "花费", "花", "花了" 清掉
-    pChStart ++;
-    debug_printf("pChStart=[%s],-6=[%s]\n",pChStart,pChStart-6);
+    // 还是要把 "花费", "花", "花了", "用了" 清掉
+    debug_printf("pChStart=[%s],-6=[%s],-5=[%s]\n",pChStart,pChStart-6,pChStart-5);
     if (pChStart && pChStart-szInput >= 6 && 
         (strncmp(pChStart-6,"花费",6) == 0 || 
          strncmp(pChStart-6,"花了",6) == 0 ||
          strncmp(pChStart-6,"用了",6) == 0))
         strcpy(pChStart-6,pChStart);
+    else if (pChStart && pChStart-szInput >= 5 && 
+        (strncmp(pChStart-5,"花费",6) == 0 || 
+         strncmp(pChStart-5,"花了",6) == 0 ||
+         strncmp(pChStart-5,"用了",6) == 0))
+        strcpy(pChStart-5,pChStart+1);
     else if (pChStart && pChStart-szInput >=3 && strncmp(pChStart-3,"花",3) == 0)
         strcpy(pChStart-3,pChStart);
 
