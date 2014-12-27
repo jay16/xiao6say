@@ -3,6 +3,15 @@
 #require 'sinatra/advanced_routes'
 require 'digest/md5'
 class ApplicationController < Sinatra::Base
+  set :root, ENV["APP_ROOT_PATH"]
+  enable :sessions, :logging, :dump_errors, :raise_errors, :static, :method_override
+
+  # css/js/view配置文档
+  use AssetHandler
+  use ImageHandler
+  use SassHandler
+  use CoffeeHandler
+
   register Sinatra::Reloader if development?
   register Sinatra::Flash
   register SinatraMore::MarkupPlugin
@@ -10,15 +19,6 @@ class ApplicationController < Sinatra::Base
   # helpers
   helpers ApplicationHelper
   helpers HomeHelper
-
-  # css/js/view配置文档
-  use ImageHandler
-  use SassHandler
-  use CoffeeHandler
-  use AssetHandler
-
-  set :root, ENV["APP_ROOT_PATH"]
-  enable :sessions, :logging, :dump_errors, :raise_errors, :static, :method_override
 
   before do
     @request_body = request_body

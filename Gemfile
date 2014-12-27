@@ -10,6 +10,7 @@ end
 gem "sinatra", "~>1.4.5"
 gem "sinatra-contrib", "~>1.4.2"
 gem "sinatra-flash", "~>0.3.0"
+#gem 'sinatra-assetpack', "~>0.3.3", :require => 'sinatra/assetpack'
 
 gem "actionmailer"
 gem "warden", "~>1.2.3"

@@ -19,8 +19,8 @@
 
 #define INPUT_FILE              "input.txt"
 
-#define debug_printf            printf
-//#define debug_printf            
+//#define debug_printf            printf
+#define debug_printf            
 
 int g_nDateOffset = 0;
 int g_nTime = 0;
