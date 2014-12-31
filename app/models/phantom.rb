@@ -25,7 +25,7 @@ class Phantom
 
         result += "%s: %s\n" % [key, value] 
       end
-      result += "\n请输入0(错误)或1(正确)对解析结果判断."
+      result += "\n请输入[判断值 空格 意见反馈], 1正确/(其他值)错误."
       return result
     end
 
