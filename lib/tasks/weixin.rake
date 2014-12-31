@@ -37,7 +37,7 @@ namespace :weixin do
       puts "reget token"
       puts hash
       @options[:weixin_access_token] = hash[:access_token] || hash["access_token"]
-      @options[:weixin_expires_in]   = hash[:expires_in]
+      @options[:weixin_expires_in]   = hash[:expires_in] || hash["expires_in"]
       @options[:weixin_expires_at]   = Time.now.to_i + hash[:expires_in].to_i
       File.open(weixin_token_file, "w+") do |file|
         file.puts "%s,%s" % [@options[:weixin_access_token], @options[:weixin_expires_at]]
@@ -77,17 +77,35 @@ namespace :weixin do
     menu_url = "%s/menu/create?access_token=%s" % [@options[:weixin_base_url], @options[:weixin_access_token]]
     menu_params = {
      "button" => [
-       {	
-            "type" => "click",
-            "name" => "我的例句",
-            "key"  => "MY_PHANTOM"
-        },
-       {	
-            "type" => "click",
-            "name" => "关于小6",
-            "key"  => "ABOUT_US"
-        }
-     ]
+     {	
+          "type" => "click",
+          "name" => "按钮1",
+          "key" => "button1"
+      },
+      {
+           "type" => "click",
+           "name" => "按钮2",
+           "key" => "button2"
+      },
+      {
+           "name" => "菜1单",
+           "sub_button" => [
+           {	
+               "type" => "view",
+               "name" => "测试oauth",
+               "url" => "http://www.icity365.net/uc/fn_system.php"
+            },
+            {
+               "type" => "view",
+               "name" => "爱城市",
+               "url" => "http://www.icity365.com/"
+            },
+            {
+               "type" => "click",
+               "name" => "按钮3",
+               "key" => "button3"
+            }]
+       }]
     }
     response = RestClient.post menu_url, menu_params
     puts response.code

@@ -17,25 +17,29 @@ module Sinatra
         reply.handler
       end
       def handler
-        @result = case 
-        when @raw_cmd =~ /(1|0)/
+        if @raw_cmd =~ /^\?/
+            help
+        else
           voice = @message.weixiner.messages.last(:msg_type => "voice")
           if voice.nil?
-            "您未有语音消息.\n评分失败."
+            status = "您未有语音消息.\n"
+            status += "感谢您的反馈."
           else
-            status = "您认为解析: %s\n" % (@raw_cmd == "1" ? "正确" : "错误")
-            status += "执行" + (voice.phantom.update(:yn => @raw_cmd) ? "成功" : "失败")
-            status += "\n" + "感谢您的参与."
+            if @raw_cmd =~ /^1/
+                status = "您认为解析: 正确\n"
+                status += "执行" + (voice.phantom.update(:yn => "1") ? "成功" : "失败")
+                status += "\n" + "感谢您的参与."
+            else
+                status = "您认为解析: 错误\n"
+                status += "执行" + (voice.phantom.update(:yn => "0") ? "成功" : "失败")
+                status += "\n" + "感谢您的反馈."
+            end
           end
-        when @raw_cmd = "?"
-          help
-        else
-          "理解万岁！\n" + help
         end
       end
       # help menu
       def help
-        "帮助菜单:\n1. 语音说出你的测试句子\n2. 输入0/1对最近一次解析结果判断\n3. ? 查看帮助菜单"
+        "帮助菜单:\n1. 语音说出与时间和金额花费相关的句子\n2. [判断值 空格 意见反馈] 判断值: 1正确/(其他值)错误\n3. ? 查看帮助菜单"
       end
     end # Command
 
