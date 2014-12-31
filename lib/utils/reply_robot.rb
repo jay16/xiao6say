@@ -17,7 +17,7 @@ module Sinatra
         reply.handler
       end
       def handler
-        if @raw_cmd =~ /^(\?|？)/
+        if @raw_cmd =~ /^\?/ or @raw_cm.start_with?("？")
             help
         else
           voice = @message.weixiner.messages.last(:msg_type => "voice")
