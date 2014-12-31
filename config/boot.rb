@@ -55,4 +55,3 @@ require "asset-handler"
 # helper load before controller
 recursion_require("app/helpers", /_helper\.rb$/, root_path)
 recursion_require("app/controllers", /_controller\.rb$/, root_path, [/^application_/])
-
