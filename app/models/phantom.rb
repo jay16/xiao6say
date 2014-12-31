@@ -21,7 +21,8 @@ class Phantom
         hash = {error: "json error"}
       end
       hash.each_pair do |key, value|
-        result += "%s: %s\n" % [key, value]
+        next if value.to_i.zero?
+        result += "%s: %s\n" % [key, value] 
       end
       result += "\n请输入0(错误)或1(正确)对解析结果判断."
       return result

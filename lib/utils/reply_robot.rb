@@ -58,7 +58,7 @@ module Sinatra
       def handler
         case @message.msg_type
         when "voice" then
-          result = "您说:\n%s\n" % @message.recognition.force_encoding('UTF-8')
+          result = %Q{"%s"\n} % @message.recognition.force_encoding('UTF-8')
           result += "分解:\n"
           if phantom = @message.phantom
             result += phantom.process
