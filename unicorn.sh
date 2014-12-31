@@ -20,12 +20,14 @@ case "$1" in
     start)  
         test -d log || mkdir log
         test -d tmp || mkdir -p tmp/pids
-        echo "start unicorn"
+        echo "## start unicorn"
         bundle exec ${UNICORN} -c ${CONFIG_FILE} -p ${PORT} -E ${ENVIRONMENT} -D  
+        echo -e "\t unicorn start $(test $? -eq 0 && echo "successfully" || echo "failed")."
         ;;  
     stop)  
-        echo "stop unicorn"
+        echo "## stop unicorn"
         kill -QUIT `cat tmp/pids/unicorn.pid`  
+        echo -e "\t unicorn stop $(test $? -eq 0 && echo "successfully" || echo "failed")."
         ;;  
     restart|force-reload)  
         kill -USR2 `cat tmp/pids/unicorn.pid`  
