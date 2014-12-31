@@ -566,10 +566,10 @@ int main(int argc, char *argv[])
         strncpy(szTemp,argv[1],MAX_INPUT_LEN-1);
         szTemp[MAX_INPUT_LEN-1] = '\0';
         if (process(szTemp) == SUCCESS)
-            printf("{\"Remain\":\"%s\",\"Type\":\"%s\",\"Money\": \"%d\",\"Time\":\"%d\"}\n", 
+            printf("{\"主题\":\"%s\",\"分类\":\"%s\",\"金额\": \"%d\",\"时间\":\"%d\"}\n", 
                 g_szRemain,g_szType,g_nMoney,g_nTime);
         else
-            printf("{\"error\": \"代码盲区\"}\n");
+            printf("{\"提示\": \"这好像不是金钱与时间.\"}\n");
     }
 
     if ((fp=fopen(INPUT_FILE,"r")) != NULL) {

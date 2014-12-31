@@ -1,5 +1,5 @@
 #encoding:utf-8
-desc "tasks operation around weixin"
+desc "task operation around weixin"
 namespace :weixin do
 
   def lasttime(info, &block)
@@ -10,19 +10,39 @@ namespace :weixin do
   end
 
   task :token => :simple do
-    params = []
-    { :grant_type => "client_credential",
-      :appid      => @options[:weixin_app_id],
-      :secret     => @options[:weixin_app_secret]
-    }.each_pair do |key, value|
-      params.push("%s=%s" % [key, value])
+    weixin_token_file = "%s/tmp/weixin_token" % @options[:app_root_path]
+    is_reget_token = true
+    if File.exist?(weixin_token_file)
+      access_token, expires_at = IO.read(weixin_token_file).strip.split(/,/)
+      puts expires_at.to_i
+      puts Time.now.to_i
+      if expires_at.to_i > Time.now.to_i
+        is_reget_token = false 
+        puts "get token from tmp file"
+        @options[:weixin_access_token] = access_token
+        @options[:weixin_expires_at]   = expires_at
+      end
     end
-    token_url  = "%s/token?%s" % [@options[:weixin_base_url], params.join("&")]
-    hash = JSON.parse(open(token_url).read)
-    puts hash
-    @options[:weixin_access_token] = hash[:access_token] || hash["access_token"]
-    @options[:weixin_expires_in]   = hash[:expires_in]
-    @options[:weixin_expires_at]   = Time.now.to_i + hash[:expires_in].to_i
+
+    if is_reget_token
+      params = []
+      { :grant_type => "client_credential",
+        :appid      => @options[:weixin_app_id],
+        :secret     => @options[:weixin_app_secret]
+      }.each_pair do |key, value|
+        params.push("%s=%s" % [key, value])
+      end
+      token_url  = "%s/token?%s" % [@options[:weixin_base_url], params.join("&")]
+      hash = JSON.parse(open(token_url).read)
+      puts "reget token"
+      puts hash
+      @options[:weixin_access_token] = hash[:access_token] || hash["access_token"]
+      @options[:weixin_expires_in]   = hash[:expires_in]
+      @options[:weixin_expires_at]   = Time.now.to_i + hash[:expires_in].to_i
+      File.open(weixin_token_file, "w+") do |file|
+        file.puts "%s,%s" % [@options[:weixin_access_token], @options[:weixin_expires_at]]
+      end
+    end
   end
   desc "task operation with weixin user"
   task :user_info => :simple do
@@ -46,5 +66,31 @@ namespace :weixin do
       weixiner_info = WeixinerInfo.new(hash)
       weixiner_info.save_with_logger
     end
+  end
+
+  require "rest-client"
+  desc "task create weixin menu."
+  task :menu_create => :simple do
+    Rake::Task["weixin:token"].invoke
+    abort "access_token missing" unless @options[:weixin_access_token]
+
+    menu_url = "%s/menu/create?access_token=%s" % [@options[:weixin_base_url], @options[:weixin_access_token]]
+    menu_params = {
+     "button" => [
+       {	
+            "type" => "click",
+            "name" => "我的例句",
+            "key"  => "MY_PHANTOM"
+        },
+       {	
+            "type" => "click",
+            "name" => "关于小6",
+            "key"  => "ABOUT_US"
+        }
+     ]
+    }
+    response = RestClient.post menu_url, menu_params
+    puts response.code
+    puts response.body
   end
 end
