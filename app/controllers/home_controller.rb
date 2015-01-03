@@ -1,6 +1,7 @@
 ﻿#encoding: utf-8 
 class HomeController < ApplicationController
   set :views, ENV["VIEW_PATH"] + "/home"
+  set :layout, :"../layouts/layout"
 
   # root page
   get "/" do
@@ -9,7 +10,11 @@ class HomeController < ApplicationController
     @messages  = Message.all
     @phantoms  = Phantom.all
 
-    haml :index, layout: :"../layouts/layout"
+    haml :index, layout: settings.layout
+  end
+
+  get "/about" do
+    haml :about, layout: settings.layout
   end
 
   # redirect to cpanel

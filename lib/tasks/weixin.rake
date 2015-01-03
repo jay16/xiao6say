@@ -38,7 +38,7 @@ namespace :weixin do
       puts hash
       @options[:weixin_access_token] = hash[:access_token] || hash["access_token"]
       @options[:weixin_expires_in]   = hash[:expires_in] || hash["expires_in"]
-      @options[:weixin_expires_at]   = Time.now.to_i + hash[:expires_in].to_i
+      @options[:weixin_expires_at]   = Time.now.to_i + @options[:weixin_expires_in].to_i
       File.open(weixin_token_file, "w+") do |file|
         file.puts "%s,%s" % [@options[:weixin_access_token], @options[:weixin_expires_at]]
       end

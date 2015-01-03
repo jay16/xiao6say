@@ -24,6 +24,15 @@ class Weixiner
       self.weixiner_info ? self.weixiner_info.nickname : "TODO"
     end
 
+    def personal_report
+      _messages = self.messages
+      report = "个人统计"
+      report << "\n消息数量: %d" % _messages.count rescue 0
+      report << "\n例句数量: %d" % _messages.find_all { |m| m.phantom }.count rescue 0
+      report << "\n例句判断: %d" % _messages.find_all { |m| m.phantom }.find_all { |m| !m.phantom.yn.empty? }.count rescue 0
+      report << "\n再次感谢您的贡献/::P"
+    end
+
     # instance methods
     def human_name
       "微信用户"
