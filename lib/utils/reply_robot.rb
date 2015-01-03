@@ -73,7 +73,7 @@ module Sinatra
         when "text"  then 
           Command.exec(@message)
         when "event" then 
-          case @message.event.lowcase
+          case @message.event.downcase
           when "subscribe"
             @message.weixiner.update(status: @message.event)
             "你好，感谢您参与[小6语记]\n如有疑问请输入: ?"
@@ -81,7 +81,7 @@ module Sinatra
             @message.weixiner.update(status: @message.event)
             "期待您的再次关注"
           when "click"
-            case @message.event_key.lowcase
+            case @message.event_key.downcase
             when "personal_report"
               @message.weixiner.personal_report
             else

@@ -95,7 +95,7 @@ namespace :weixin do
       }, {
           "type" => "view",
           "name" => "关于小六",
-          "key" => "http://xiao6yuji.com/about"
+          "url" => "http://xiao6yuji.com/about"
        }]
     }.to_json
     response = HTTParty.post menu_url, body: menu_params, headers: {'ContentType' => 'application/json'} 
