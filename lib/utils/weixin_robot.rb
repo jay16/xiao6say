@@ -35,7 +35,7 @@ module Sinatra
                   :pic_url,
                   :title, :description, :url,
                   :location_y, :location_x, :scale, :label,
-                  :event, :latitude, :precision,
+                  :event, :event_key, :latitude, :precision,
                   :media_id, :format, :recognition
       def initialize(raw_message)
         if raw_message.instance_of?(String)
@@ -70,6 +70,7 @@ module Sinatra
           @url           = @raw_message.scan(/<Url><!\[CDATA\[(.*)\]\]><\/Url>/).flatten.join
         elsif event?
           @event         = @raw_message.scan(/<Event><!\[CDATA\[(.*)\]\]><\/Event>/).flatten.join
+          @event_key     = @raw_message.scan(/<EventKey><!\[CDATA\[(.*)\]\]><\/EventKey>/).flatten.join
           @latitude      = @raw_message.scan(/<Latitude>(.*)<\/Latitude>/).flatten.join
           @precision     = @raw_message.scan(/<Precision>(.*)<\/Precision>/).flatten.join
         elsif voice?

@@ -73,10 +73,22 @@ module Sinatra
         when "text"  then 
           Command.exec(@message)
         when "event" then 
-          @message.weixiner.update(status: @message.event)
-          case @message.event
-          when "subscribe" then "你好，感谢您参与[小6语记]\n如有疑问请输入: ?"
-          else "期待您的再次关注"
+          case @message.event.lowcase
+          when "subscribe"
+            @message.weixiner.update(status: @message.event)
+            "你好，感谢您参与[小6语记]\n如有疑问请输入: ?"
+          when "unsubscribe"
+            @message.weixiner.update(status: @message.event)
+            "期待您的再次关注"
+          when "click"
+            case @message.event_key.lowcase
+            when "personal_report"
+              @message.weixiner.personal_report
+            else
+              "click#%s TODO" % @message.event_key
+            end
+          when "view"
+            # weixin will redirect to menu url
           end
         else 
           "类型为[%s],暂不支持!" % @message.msg_type

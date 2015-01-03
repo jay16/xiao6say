@@ -8,7 +8,18 @@ namespace :weixin do
      eint = Time.now.to_f
      printf("%-10s - %s\n", "[%dms]" % ((eint - bint)*1000).to_i, info)
   end
+  def puts_response(response)
+    puts "code:"
+    puts response.code
+    puts "body:"
+    puts response.body
+    puts "message:"
+    puts response.message
+    puts "headers:"
+    puts response.headers.inspect
+  end
 
+  desc "get weixin token"
   task :token => :simple do
     weixin_token_file = "%s/tmp/weixin_token" % @options[:app_root_path]
     is_reget_token = true
@@ -18,7 +29,7 @@ namespace :weixin do
       puts Time.now.to_i
       if expires_at.to_i > Time.now.to_i
         is_reget_token = false 
-        puts "get token from tmp file"
+        puts "get token from tmp file."
         @options[:weixin_access_token] = access_token
         @options[:weixin_expires_at]   = expires_at
       end
@@ -34,8 +45,7 @@ namespace :weixin do
       end
       token_url  = "%s/token?%s" % [@options[:weixin_base_url], params.join("&")]
       hash = JSON.parse(open(token_url).read)
-      puts "reget token"
-      puts hash
+      puts "get token from weixin server."
       @options[:weixin_access_token] = hash[:access_token] || hash["access_token"]
       @options[:weixin_expires_in]   = hash[:expires_in] || hash["expires_in"]
       @options[:weixin_expires_at]   = Time.now.to_i + @options[:weixin_expires_in].to_i
@@ -68,47 +78,47 @@ namespace :weixin do
     end
   end
 
-  require "rest-client"
+  #require "rest-client"
+  require "httparty"
+  require "json"
   desc "task create weixin menu."
   task :menu_create => :simple do
-    Rake::Task["weixin:token"].invoke
+    Rake::Task["weixin:menu_delete"].invoke
     abort "access_token missing" unless @options[:weixin_access_token]
 
     menu_url = "%s/menu/create?access_token=%s" % [@options[:weixin_base_url], @options[:weixin_access_token]]
     menu_params = {
-     "button" => [
-     {	
+      "button" => [{	
           "type" => "click",
-          "name" => "按钮1",
-          "key" => "button1"
-      },
-      {
-           "type" => "click",
-           "name" => "按钮2",
-           "key" => "button2"
-      },
-      {
-           "name" => "菜1单",
-           "sub_button" => [
-           {	
-               "type" => "view",
-               "name" => "测试oauth",
-               "url" => "http://www.icity365.net/uc/fn_system.php"
-            },
-            {
-               "type" => "view",
-               "name" => "爱城市",
-               "url" => "http://www.icity365.com/"
-            },
-            {
-               "type" => "click",
-               "name" => "按钮3",
-               "key" => "button3"
-            }]
+          "name" => "数据统计",
+          "key" => "PERSONAL_REPORT"
+      }, {
+          "type" => "view",
+          "name" => "关于小六",
+          "key" => "http://xiao6yuji.com/about"
        }]
-    }
-    response = RestClient.post menu_url, menu_params
-    puts response.code
-    puts response.body
+    }.to_json
+    response = HTTParty.post menu_url, body: menu_params, headers: {'ContentType' => 'application/json'} 
+    #response = RestClient.post menu_url, menu_params
+    puts_response(response)
+  end
+
+  desc "task delete weixin menu."
+  task :menu_delete => :simple do
+    Rake::Task["weixin:token"].invoke
+    abort "access_token missing" unless @options[:weixin_access_token]
+
+    menu_url = "%s/menu/delete?access_token=%s" % [@options[:weixin_base_url], @options[:weixin_access_token]]
+    response = HTTParty.get menu_url
+    puts_response(response)
+  end
+  desc "task get weixin menu."
+  task :menu_get => :simple do
+    Rake::Task["weixin:token"].invoke
+    abort "access_token missing" unless @options[:weixin_access_token]
+
+    menu_url = "%s/menu/get?access_token=%s" % [@options[:weixin_base_url], @options[:weixin_access_token]]
+    response = HTTParty.get menu_url
+    puts_response(response)
   end
 end

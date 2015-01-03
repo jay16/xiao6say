@@ -32,6 +32,7 @@ class Message # 微信消息
     property :url            , Text
     # event
     property :event          , String
+    property :event_key      , String
     property :latitude       , String
     property :precision      , String
 
