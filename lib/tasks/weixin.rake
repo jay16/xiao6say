@@ -94,7 +94,7 @@ namespace :weixin do
           "key" => "PERSONAL_REPORT"
       }, {
           "type" => "view",
-          "name" => "关于小六",
+          "name" => "关于小6",
           "url" => "http://xiao6yuji.com/about"
        }]
     }.to_json

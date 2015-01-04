@@ -55,7 +55,7 @@ window.App =
     main_height   = y - nav_height - footer_height
     if main_height > 300
       $("#main").css
-        height: main_height + "px"
+        "min-height": main_height + "px"
 
   initBootstrapNavbarLi: ->
     # navbar-nav active menu
