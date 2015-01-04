@@ -17,10 +17,19 @@ module StringMethods
     unless ENV["APP_ROOT_PATH"]
       puts "\nWARNGING: ENV['APP_ROOT_PATH'] undefined!\n"
     end
-    cmd = "%s/lib/utils/processPattern/processPattern %s" % [ENV["APP_ROOT_PATH"], self]
-    IO.popen(cmd) do |stdout| 
-      stdout.reject(&:empty?) 
-    end.unshift($?.exitstatus.zero?)
+    cmd = "%s/lib/utils/processPattern/processPattern '%s'" % [ENV["APP_ROOT_PATH"], self]
+
+    result = IO.popen(cmd) do |stdout| 
+        stdout.readlines#.reject(&method) 
+    end
+    status = $?.exitstatus.zero?
+
+    shell  = cmd.split(/\n/).map { |line| "\t`" + line + "`" }.join("\n")
+    result = ["bash: no output"] if result.empty?
+    resstr = result.map { |line| "\t\t" + line }.join
+    puts "%s\n\t\t==> %s\n%s\n" % [shell, status, resstr]
+
+    return result.unshift(status)
   end
 end
 class String

@@ -44,8 +44,10 @@ class Message # 微信消息
 
     after :save do |message|
       # 语音文字 => 词义解析 
-      recognition = message.recognition 
+      recognition = message.recognition.force_encoding("UTF-8")
       # recognition = "学习英语四十分钟"
+      # recognition = "功能添加 更新日志 一个半小时"
+      puts message.from_user_name
       if message.msg_type == "voice" and recognition.length > 0
         result = recognition.process_pattern rescue [false, '{"error": "执行失败"}']
         phantom = Phantom.new({
@@ -54,6 +56,29 @@ class Message # 微信消息
           :json       => result[0] ? result[1] : '{"error": "脚本错误"}'
         })
         phantom.save_with_logger
+
+        # create change_log through weixin
+        admin_group = {
+          "DxaRTPM72HgjY9zo8kyntqSXF3fc" => "wechat",
+          "oH4gjt9zVQeIt1ZUdngMkKdIhw7k" => "junjie",
+          "oH4gjt1g0GwyO7whiVhnp7WUHEiY" => "albert",
+          "oH4gjt1tmo0C1ia7g4-Sey81W2ZY" => "herman",
+          "oH4gjt_Q7UBeNpeCoUQI5Rgi3a9g" => "phantom"
+        }
+        if admin_group.keys.include?(message.from_user_name)
+          keywords = %w[会议记录 功能添加 功能调整 界面优化 代码优化]
+          if keyword = keywords.find { |k| recognition.start_with?(k) }
+            change_log = ChangeLog.new({
+              title: "%s#%s" % [keyword, Time.now.strftime("%y/%m/%d %H:%M")],
+              content: recognition,
+              tag: keyword,
+              source: "weixin",
+              author: admin_group.fetch(message.from_user_name),
+              remark: "message#%d" % message.id
+            })
+            change_log.save_with_logger
+          end
+        end
       end
     end
 

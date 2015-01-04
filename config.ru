@@ -4,9 +4,10 @@
   "/weixin"      => "WeixinController",
   "/user"        => "UserController",
   "/cpanel"      => "Cpanel::HomeController",
-  "/cpanel/weixiners" => "Cpanel::WeixinersController",
-  "/cpanel/messages"  => "Cpanel::MessagesController",
-  "/cpanel/phantoms"  => "Cpanel::PhantomsController"
+  "/cpanel/weixiners"  => "Cpanel::WeixinersController",
+  "/cpanel/messages"   => "Cpanel::MessagesController",
+  "/cpanel/phantoms"   => "Cpanel::PhantomsController",
+  "/cpanel/change_log" => "Cpanel::ChangeLogController"
 }
 
 require "./config/boot.rb"

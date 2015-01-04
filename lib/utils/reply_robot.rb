@@ -66,6 +66,10 @@ module Sinatra
           result += "分解:\n"
           if phantom = @message.phantom
             result += phantom.process
+            if change_log = ChangeLog.first(remark: "message#%d" % @message.id)
+              result += "\n\n hi %s" % change_log.author
+              result += "\n更新日志创建成功."
+            end
           else
             result += "未创建"
           end

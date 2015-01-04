@@ -1,16 +1,10 @@
 -#encoding: utf-8
-
 .row
   %h1 微信用户 
 
 :css
-  .avatar {
-    width: 48px;
-    height: 48px;
-  }
-  .table .va-m{
-    vertical-align: middle;
-  }
+  .avatar { width: 48px; height: 48px; }
+  .table .va-m{ vertical-align: middle; }
 .row{style: "margin-top: 5px; background: white;"}
   %table.table.table-striped.table-condensed
     %thead
@@ -23,7 +17,7 @@
     %tbody
       - @weixiners.each do |weixiner|
         %tr
-          %td
+          %td{"data-openid" => weixiner.uid}
             = image_tag weixiner.head_img_url, class: "avatar"
           %td.va-m= weixiner.nick_name
           %td.va-m= weixiner.messages.count

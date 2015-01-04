@@ -77,13 +77,16 @@ module Utils
           _template = "\n\nModel - %s saved" % self.class.name
           if self.save
             puts "%s successfully." % _template
+            puts "\n\n"
+            return true
           else
             puts "%s failed:" % _template
             self.errors.each_pair do |key, value|
               puts "%-15s => %s" % [key, value]
             end
+            puts "\n\n"
+            return false
           end
-          puts "\n\n"
         end
       end
 
