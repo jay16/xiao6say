@@ -44,7 +44,8 @@ class Message # 微信消息
 
     after :save do |message|
       # 语音文字 => 词义解析 
-      recognition = message.recognition.force_encoding("UTF-8")
+      recognition = message.recognition || ""
+      recognition = recognition.force_encoding("UTF-8")
       # recognition = "学习英语四十分钟"
       # recognition = "功能添加 更新日志 一个半小时"
       puts message.from_user_name
