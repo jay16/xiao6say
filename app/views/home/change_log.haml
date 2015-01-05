@@ -1,0 +1,38 @@
+= stylesheet_link_tag "docs.min.css"
+.jumbotron
+  %h1 更新日志
+  %p 小6语记，从我做起... 
+
+.bs-docs-section
+  - @change_logs.each do |change_log|
+    .bs-callout.bs-callout-danger
+      %h4= change_log.title
+      %table.table.table-condensed.table-bordered
+        %tr
+          %td 标题
+          %td= change_log.title
+        %tr
+          %td 内容
+          %td= change_log.content.split(/\n/).join("<br>")
+        %tr
+          %td 耗时
+          %td= change_log.duration + " 分钟" if change_log.duration
+        %tr
+          %td 标签
+          %td= change_log.tag.split(/\s+/).join(",")
+        %tr
+          %td 源自
+          %td= change_log.source.split(/\s+/).join(",")
+        %tr
+          %td 创建者
+          %td= change_log.author.split(/#/).first
+        %tr
+          %td 创建时间
+          %td= change_log.created_at.strftime("%Y-%m-%d %H:%M:%S")
+        - if change_log.editor
+          %tr
+            %td 编辑者
+            %td= change_log.editor.split(/#/).first
+          %tr
+            %td 编辑时间
+            %td= change_log.updated_at.strftime("%Y-%m-%d %H:%M:%S")

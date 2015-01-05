@@ -32,3 +32,6 @@
       %tr
         %td 编辑时间
         %td= @change_log.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+    %tr
+      %td 公开
+      %td= @change_log.publish

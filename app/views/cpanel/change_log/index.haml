@@ -10,6 +10,7 @@
         %th 标题
         %th 内容
         %th 标签
+        %th 公开
         %th 编辑
     %tbody
       - @change_logs.each do |change_log|
@@ -17,6 +18,7 @@
           %td= change_log.title
           %td= change_log.content.split(/\n/).join("<br>")
           %td= change_log.tag.split(/\s+/).join(",")
+          %td= change_log.publish ? "Y" : "N"
           %td
             = link_to "明细", "/cpanel/change_log/%d" % change_log.id 
             |

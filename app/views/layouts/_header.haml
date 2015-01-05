@@ -17,6 +17,8 @@
           %li= link_to "关于", "/about"
 
         %ul.nav.navbar-nav.navbar-right
+          %li.hidden
+            = link_to "更新日志", "/change_log"
           - unless current_user
             %li 
               = link_to "登陆", "/user/login"

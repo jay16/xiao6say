@@ -17,6 +17,12 @@ class HomeController < ApplicationController
     haml :about, layout: settings.layout
   end
 
+  get "/change_log" do
+    @change_logs = ChangeLog.all(publish: true, order: [:created_at.desc])
+
+    haml :change_log, layout: settings.layout
+  end
+
   # redirect to cpanel
   get "/admin" do
     redirect "/cpanel"

@@ -15,9 +15,10 @@ class ChangeLog
     property :tag       , String 
     property :duration  , String 
     property :remark    , String
+    property :publish   , Boolean, :default => false
 
     # instance methods
     def human_name
-      "更新记录"
+      "更新日志"
     end
 end
