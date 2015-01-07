@@ -25,7 +25,7 @@ class HomeController < ApplicationController
         if Time.now.to_i - timestamp.to_i <= 1
           @from_user_name = from_user_name
           `echo '#{line}' >> #{expired_file}`
-          `cd #{ENV['APP_ROOT_PATH']}/tmp && grep -vFf weixin_menu_view.cache.expired weixin_menu_view.cache > weixin_menu_view.cache`
+          `grep -vFf #{expired_file} #{cache_file} > #{cache_file}` 
         else
           puts "Weixin Menu View Expired! - %s" % line
         end
