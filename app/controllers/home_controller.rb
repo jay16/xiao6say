@@ -20,13 +20,15 @@ class HomeController < ApplicationController
       expired_lines = IO.readlines(expired_file) rescue []
       cache_lines   = IO.readlines(cache_file) - expired_lines
       unless cache_lines.empty?
-        line = cache_lines.first
+        line = cache_lines.last
         timestamp, from_user_name = line.split(/,/)
         if Time.now.to_i - timestamp.to_i <= 1
           @from_user_name = from_user_name
           `echo '#{line}' >> #{expired_file}`
           `grep -vFf #{expired_file} #{cache_file} > #{cache_file}` 
+          `true > #{expired_file}`
         else
+          `true > #{cache_file}`
           puts "Weixin Menu View Expired! - %s" % line
         end
       end
