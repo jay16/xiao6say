@@ -92,6 +92,10 @@ module Sinatra
               "click#%s TODO" % @message.event_key
             end
           when "view"
+            cache_file= File.join(ENV["APP_ROOT_PATH"], "tmp/weixin_menu_view.cache")
+            command = "echo '%s,%s' >> %s", [Time.now.to_i, @message.from_user_name, cache_file]
+            `#{command}`
+            return "event#view TODO"
             # weixin will redirect to menu url
           end
         else 

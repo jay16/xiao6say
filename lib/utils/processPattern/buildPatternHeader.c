@@ -24,8 +24,8 @@ int main(void)
         fprintf(fp1,"\"%s\",\n",szTemp1);
         fprintf(fp2,"\"%s\",\n",szTemp2);
     }
-    fprintf(fp1,"\"结束符号\"};");
-    fprintf(fp2,"\"生活\"};");
+    fprintf(fp1,"\"结束符号\"};\n");
+    fprintf(fp2,"\"生活\"};\n");
 
     fclose(fp);
     fclose(fp1);

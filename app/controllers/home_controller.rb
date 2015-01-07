@@ -14,6 +14,23 @@ class HomeController < ApplicationController
   end
 
   get "/about" do
+    cache_file   = File.join(ENV["APP_ROOT_PATH"], "tmp/weixin_menu_view.cache")
+    expired_file = cache_file + ".expired"
+    if File.exist?(cache_file)
+      expired_lines = IO.readlines(expired_file) rescue []
+      cache_lines   = IO.readlines(cache_file) - expired_lines
+      unless cache_lines.empty?
+        line = cache_lines.first
+        timestamp, from_user_name = line.split(/,/)
+        if Time.now.to_i - timestamp.to_i <= 1
+          @from_user_name = from_user_name
+          `echo '#{line}' >> #{expired_file}`
+          `cd #{ENV['APP_ROOT_PATH']}/tmp && grep -vFf weixin_menu_view.cache.expired weixin_menu_view.cache > weixin_menu_view.cache`
+        else
+          puts "Weixin Menu View Expired! - %s" % line
+        end
+      end
+    end
     haml :about, layout: settings.layout
   end
 
