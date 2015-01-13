@@ -3,11 +3,13 @@
   "/"            => "HomeController",
   "/weixin"      => "WeixinController",
   "/user"        => "UserController",
-  "/cpanel"      => "Cpanel::HomeController",
+  "/api/ios"           => "API::IOSController",
+  "/cpanel"            => "Cpanel::HomeController",
   "/cpanel/weixiners"  => "Cpanel::WeixinersController",
   "/cpanel/messages"   => "Cpanel::MessagesController",
   "/cpanel/phantoms"   => "Cpanel::PhantomsController",
-  "/cpanel/change_log" => "Cpanel::ChangeLogController"
+  "/cpanel/change_log" => "Cpanel::ChangeLogController",
+  "/cpanel/api_data"  => "Cpanel::APIDataController"
 }
 
 require "./config/boot.rb"
