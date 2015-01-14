@@ -1,7 +1,7 @@
 ﻿#encoding: utf-8 
 class API::IOSController < API::ApplicationController
 
-  get "/" do
+  route :get, :post, "/" do
     api_data = ApiData.new({
       :device => params[:device],
       :data   => params[:data]

@@ -2,6 +2,7 @@
 #require "sinatra/decompile"
 #require 'sinatra/advanced_routes'
 require 'digest/md5'
+require "sinatra/multi_route"
 class ApplicationController < Sinatra::Base
   set :root, ENV["APP_ROOT_PATH"]
   enable :sessions, :logging, :dump_errors, :raise_errors, :static, :method_override
@@ -13,6 +14,7 @@ class ApplicationController < Sinatra::Base
   use CoffeeHandler
 
   register Sinatra::Reloader if development?
+  register Sinatra::MultiRoute
   register Sinatra::Flash
   register SinatraMore::MarkupPlugin
   
