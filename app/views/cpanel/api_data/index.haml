@@ -11,11 +11,13 @@
   %table.table.table-striped.table-condensed
     %thead
       %tr
-        %th 最近三十笔(#{@api_datas.count})
-        %th timestamp
+        %th latest 15 rows(#{@api_datas.count})
+        %th device
+        %th date 
     %tbody
-      - @api_datas.first(30).each do |data|
+      - @api_datas.first(15).each do |data|
         %tr
           %td= data.data
-          %td= data.created_at.strftime("%Y-%m-%d %H:%M:%S")
+          %td= data.device.split(/,/).first.split(/:/).last rescue data.device
+          %td= data.created_at.strftime("%m/%d %H:%M")
 
