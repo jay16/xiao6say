@@ -44,21 +44,21 @@ namespace :remote do
         puts "\n"
       end
 
-      puts "bundle --local"
-      command = "cd %s && bundle --local" % remote_root_path
-      execute!(ssh, command)
+      #puts "bundle --local"
+      #command = "cd %s && bundle --local" % remote_root_path
+      #execute!(ssh, command)
 
-      puts "stop unicorn"
-      command = "cd %s && /bin/sh unicorn.sh stop" % remote_root_path
-      execute!(ssh, command)
+      #puts "stop unicorn"
+      #command = "cd %s && /bin/sh unicorn.sh stop" % remote_root_path
+      #execute!(ssh, command)
 
-      puts "rake get weixiner info"
-      command = "cd %s && RACK_ENV=production bundle exec rake weixin:user_info" % remote_root_path
-      execute!(ssh, command)
+     # puts "rake get weixiner info"
+     # command = "cd %s && RACK_ENV=production bundle exec rake weixin:user_info" % remote_root_path
+     # execute!(ssh, command)
 
-      puts "start unicorn"
-      command = "cd %s && /bin/sh unicorn.sh start" % remote_root_path
-      execute!(ssh, command)
+      #puts "start unicorn"
+      #command = "cd %s && /bin/sh unicorn.sh start" % remote_root_path
+      #execute!(ssh, command)
 
       puts "download db files"
       database_name = "%s_%s" % [ENV["APP_NAME"], ENV["RACK_ENV"]]

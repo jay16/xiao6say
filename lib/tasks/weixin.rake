@@ -1,4 +1,4 @@
-#encoding:utf-8
+#encoding: utf-8
 desc "task operation around weixin"
 namespace :weixin do
 
@@ -12,9 +12,9 @@ namespace :weixin do
     puts "code:"
     puts response.code
     puts "body:"
-    puts response.body
+    puts response.body.force_encoding("UTF-8")
     puts "message:"
-    puts response.message
+    puts response.message.force_encoding("UTF-8")
     puts "headers:"
     puts response.headers.inspect
   end
@@ -28,7 +28,7 @@ namespace :weixin do
       puts expires_at.to_i
       puts Time.now.to_i
       if expires_at.to_i > Time.now.to_i
-        is_reget_token = false 
+        is_reget_token = false
         puts "get token from tmp file."
         @options[:weixin_access_token] = access_token
         @options[:weixin_expires_at]   = expires_at
@@ -87,20 +87,13 @@ namespace :weixin do
     abort "access_token missing" unless @options[:weixin_access_token]
 
     menu_url = "%s/menu/create?access_token=%s" % [@options[:weixin_base_url], @options[:weixin_access_token]]
-    menu_params = {
-      "button" => [{	
-          "type" => "click",
-          "name" => "数据统计",
-          "key" => "PERSONAL_REPORT"
-      }, {
-          "type" => "view",
-          "name" => "关于小6",
-          "url" => "http://xiao6yuji.com/about"
-       }]
-    }.to_json
-    response = HTTParty.post menu_url, body: menu_params, headers: {'ContentType' => 'application/json'} 
-    #response = RestClient.post menu_url, menu_params
+    json_file    = File.join(ENV["APP_ROOT_PATH"], "config/weixin_menu.json")
+    json_content = IO.read(json_file).force_encoding("UTF-8")
+    menu_params  = eval(json_content).to_json
+    response     = HTTParty.post menu_url, body: menu_params, headers: {'ContentType' => 'application/json'}
     puts_response(response)
+
+    Rake::Task["weixin:menu_get"].invoke
   end
 
   desc "task delete weixin menu."
@@ -116,7 +109,7 @@ namespace :weixin do
   task :menu_get => :simple do
     Rake::Task["weixin:token"].invoke
     abort "access_token missing" unless @options[:weixin_access_token]
-
+    
     menu_url = "%s/menu/get?access_token=%s" % [@options[:weixin_base_url], @options[:weixin_access_token]]
     response = HTTParty.get menu_url
     puts_response(response)

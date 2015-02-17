@@ -1,0 +1,15 @@
+{ 
+  "button" => [{
+      "type" => "click",
+      "name" => "数据统计",
+      "key"  => "PERSONAL_REPORT"
+  }, {
+      "type" => "view",
+      "name" => "提交问题",
+      "url"  => "http://www.mikecrm.com/f.php?t=XnEqHO"
+  }, {
+      "type" => "view",
+      "name" => "关于小6",
+      "url"  => "http://xiao6yuji.com/about"
+   }]
+}
