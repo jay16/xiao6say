@@ -9,6 +9,8 @@ class HomeController < ApplicationController
     @weixiners = Weixiner.all
     @messages  = Message.all
     @phantoms  = Phantom.all
+    @devices   = Device.all#(:simulator => false)
+    @datas     = DeviceData.all#(:simulator => false)
 
     haml :index, layout: settings.layout
   end

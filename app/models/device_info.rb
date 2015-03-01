@@ -1,16 +1,18 @@
 ﻿#encoding: utf-8
 require "model-base"
-class ApiData
+class DeviceInfo
     include DataMapper::Resource
     include Utils::DataMapper::Model
     #extend  Utils::DataMapper::Model
+    include Utils::ActionLogger
 
     property :id        , Serial 
-    property :device    , Text
-    property :data      , Text
+    property :json      , Text
 
-    # ins1tance methods
+    belongs_to :device
+
+    # instance methods
     def human_name
-      "api数据"
+      "设备信息"
     end
 end

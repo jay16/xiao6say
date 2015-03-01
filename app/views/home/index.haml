@@ -1,4 +1,17 @@
-.row
+:css
+  .first-row .col-lg-4 { margin-top: -40px; }
+  .second-row .col-lg-4 { margin-top: -80px; }
+.row.first-row
+  .col-lg-2
+  .col-lg-4
+    .stat
+      %h2 Devices
+      %span.stat-heading= @devices.count
+  .col-lg-4
+    .stat
+      %h2 Datas
+      %span.stat-heading= @datas.count
+.row.second-row
   .col-lg-4
     .stat
       %h2 Users
@@ -11,4 +24,3 @@
     .stat
       %h2 Phantoms 
       %span.stat-heading= @phantoms.count
-

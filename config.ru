@@ -1,15 +1,15 @@
 #encoding: utf-8
 @app_routes_map = {
-  "/"            => "HomeController",
-  "/weixin"      => "WeixinController",
-  "/user"        => "UserController",
-  "/api/ios"           => "API::IOSController",
+  "/"                  => "HomeController",
+  "/weixin"            => "WeixinController",
+  "/user"              => "UserController",
+  "/api/device"        => "API::DeviceController",
   "/cpanel"            => "Cpanel::HomeController",
   "/cpanel/weixiners"  => "Cpanel::WeixinersController",
   "/cpanel/messages"   => "Cpanel::MessagesController",
   "/cpanel/phantoms"   => "Cpanel::PhantomsController",
   "/cpanel/change_log" => "Cpanel::ChangeLogController",
-  "/cpanel/api_data"  => "Cpanel::APIDataController"
+  "/cpanel/api_data"   => "Cpanel::APIDataController"
 }
 
 require "./config/boot.rb"
