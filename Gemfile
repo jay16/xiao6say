@@ -30,11 +30,13 @@ gem "dm-sqlite-adapter", "~>1.2.0"
 
 #assets
 gem "rake", "~>10.3.2"
-gem "json"
+gem "json", "~>1.8.1"
 gem "haml", "~> 4.0.5"
 gem "sass", "~>3.3.7"
 gem "therubyracer", "~>0.12.1"
 gem "coffee-script", "~>2.2.0"
+gem 'will_paginate', '~> 3.0.6'
+gem "will_paginate-bootstrap", "~>1.0.1"
 
 gem "unicorn", "~>4.8.3"
 gem "settingslogic", "~>2.0.9"

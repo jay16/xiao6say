@@ -2,11 +2,17 @@
 class Cpanel::DevicesController < Cpanel::ApplicationController
   set :views, ENV["VIEW_PATH"] + "/cpanel/devices"
   set :layout, :"../layouts/layout"
+  include WillPaginate::Sinatra::Helpers
 
   get "/" do
-    @devices = Device.all
-    @device_datas = DeviceData.all
+    @devices = Device.paginate(:page => params[:page], :per_page => 30)
 
     haml :index, layout: settings.layout
+  end
+
+  get "/datas" do
+    @datas = DeviceData.paginate(:page => params[:page], :per_page => 30)
+
+    haml :datas, layout: settings.layout
   end
 end

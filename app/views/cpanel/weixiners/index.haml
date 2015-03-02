@@ -1,25 +1,33 @@
 -#encoding: utf-8
 .row
-  %h1 微信用户(#{@weixiners.count})
+  %h1 微信用户
 
 :css
-  .avatar { width: 48px; height: 48px; }
+  .avatar { width: 24px; height: 24px; }
   .table .va-m{ vertical-align: middle; }
 .row{style: "margin-top: 5px; background: white;"}
   %table.table.table-striped.table-condensed
     %thead
       %tr
-        %th 微信头像
-        %th 微信昵称
-        %th 消息数量
-        %th 例句数量 
-        %th 关注状态
+        %th 
+        %th 头像
+        %th 昵称
+        %th 消息
+        %th 例句
+        %th 状态
     %tbody
-      - @weixiners.each do |weixiner|
+      - @weixiners.each_with_index do |weixiner, index|
         %tr
+          - page_offset = (params[:page].nil? ? 0 : params[:page].to_i-1) * 30
+          %td.va-m= page_offset + index + 1
           %td{"data-openid" => weixiner.uid}
             = image_tag weixiner.head_img_url, class: "avatar"
           %td.va-m= weixiner.nick_name
           %td.va-m= weixiner.messages.count
           %td.va-m= weixiner.messages.find_all { |m| m.phantom }.count
-          %td.va-m= weixiner.status
+          %td.va-m= (weixiner.status == "subscribe" ? "" : "未") + "关注"
+
+.row
+  :css
+    .pagination { display: block; text-align: center;margin-bottom: 15px;}
+  = will_paginate @weixiners, :previous_label => "上一页", :next_label => "下一页", renderer: BootstrapPagination::Sinatra

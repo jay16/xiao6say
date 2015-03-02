@@ -8,6 +8,8 @@ class Cpanel::HomeController < Cpanel::ApplicationController
     @weixiners = Weixiner.all
     @messages  = Message.all
     @phantoms  = Phantom.all
+    @devices = Device.all
+    @device_datas = DeviceData.all
 
     haml :index, layout: :"../layouts/layout"
   end

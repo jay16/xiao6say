@@ -1,0 +1,37 @@
+-#encoding: utf-8
+.row{style: "height:70px;"}
+  %h1{style: "display: inline-block;"} 设备例句
+
+:css
+  .table .tv {
+    text-align: center;
+    vertical-align: middle;
+    max-width: 20px;
+  }
+.row{style: "margin-top: 5px; background: white;"}
+  %table.table.table-condensed
+    %thead
+      %tr
+        %th 
+        %th.tv 设备
+        %th 保留
+        %th 分类
+        %th 时间
+        %th 金额
+    %tbody
+      - @datas.each_with_index do |data, index|
+        %tr
+          - page_offset = (params[:page].nil? ? 0 : params[:page].to_i-1) * 30
+          %td.tv{rowspan: "2"}= page_offset + index + 1
+          %td.tv{rowspan: "2"}= data.device.platform
+          %td{colspan: "4", style: "background: sliver;"}= data.input
+        %tr
+          %td= data.remain
+          %td= data.type
+          %td= data.time
+          %td= data.money
+
+.row
+  :css
+    .pagination { display: block; text-align: center;margin-bottom: 15px;}
+  = will_paginate @datas, :previous_label => "上一页", :next_label => "下一页", renderer: BootstrapPagination::Sinatra

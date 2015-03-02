@@ -3,6 +3,10 @@
 #require 'sinatra/advanced_routes'
 require 'digest/md5'
 require "sinatra/multi_route"
+require 'will_paginate'
+require 'will_paginate/data_mapper'  # or data_mapper/sequel
+#require 'will_paginate/collection'
+
 class ApplicationController < Sinatra::Base
   set :root, ENV["APP_ROOT_PATH"]
   enable :sessions, :logging, :dump_errors, :raise_errors, :static, :method_override

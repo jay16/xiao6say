@@ -3,10 +3,11 @@ class Cpanel::PhantomsController < Cpanel::ApplicationController
   set :views, ENV["VIEW_PATH"] + "/cpanel/phantoms"
   set :layout, :"../layouts/layout"
   helpers PhantomHelper
+  include WillPaginate::Sinatra::Helpers
 
   # root page
   get "/" do
-    @phantoms = Phantom.all
+    @phantoms = Phantom.paginate(:page => params[:page], :per_page => 30)
 
     haml :index, layout: settings.layout
   end

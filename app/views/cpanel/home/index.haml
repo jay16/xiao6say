@@ -12,9 +12,9 @@
         %th 备注
     %tbody
       %tr
-        %td 用户
+        %td 注册用户
         %td= @users.count
-        %td
+        %td= "管理员: %d" % @users.find_all { |u| u.admin? }.count
       %tr
         %td 微信用户 
         %td= @weixiners.count
@@ -24,6 +24,16 @@
         %td= @messages.count
         %td
       %tr
-        %td 词义解析
+        %td 微信例句
         %td= @phantoms.count
-        %td
+        - y, other = @phantoms.partition { |p| p.yn == "1" }
+        %td= "正确: %d, 错误/未决: %d" % [y.count, other.count]
+      %tr
+        %td 移动设备
+        %td= @devices.count
+        %td= "模拟设备: %d" % @devices.find_all { |device| device.simulator }.count
+      %tr
+        %td 设备例句 
+        %td= @device_datas.count
+        %td= "模拟例句: %d" % @device_datas.find_all { |data| data.simulator }.count
+
