@@ -9,7 +9,7 @@
   "/cpanel/messages"   => "Cpanel::MessagesController",
   "/cpanel/phantoms"   => "Cpanel::PhantomsController",
   "/cpanel/change_log" => "Cpanel::ChangeLogController",
-  "/cpanel/api_data"   => "Cpanel::APIDataController"
+  "/cpanel/devices"    => "Cpanel::DevicesController"
 }
 
 require "./config/boot.rb"

@@ -1,0 +1,26 @@
+-#encoding: utf-8
+.row{style: "height:70px;"}
+  %h1{style: "display: inline-block;"} 设备数据
+:css
+  .table .tv {
+    text-align: center;
+    vertical-align: middle;
+    max-width: 20px;
+  }
+.row{style: "margin-top: 5px; background: white;"}
+  %table.table.table-striped.table-condensed
+    %thead
+      %tr
+        %th 名称
+        %th 数量
+        %th 备注
+    %tbody
+      %tr
+        %td 设备
+        %td= @devices.count
+        %td= "模拟设备: %d" % @devices.find_all { |device| device.simulator }.count
+      %tr
+        %td 语音例句 
+        %td= @device_datas.count
+        %td= "模拟例句: %d" % @device_datas.find_all { |data| data.simulator }.count
+
