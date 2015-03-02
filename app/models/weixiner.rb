@@ -16,12 +16,12 @@ class Weixiner
 
     def head_img_url
       default_headimgurl = "/images/headimgurl.jpeg"
-      headimgurl = self.weixiner_info ? self.weixiner_info.headimgurl.strip : default_headimgurl
+      headimgurl = self.weixiner_info.headimgurl.strip rescue default_headimgurl
       headimgurl.empty? ? default_headimgurl : headimgurl
     end
 
     def nick_name
-      self.weixiner_info ? self.weixiner_info.nickname : "TODO"
+      self.weixiner_info.nickname rescue "TODO"
     end
 
     def personal_report

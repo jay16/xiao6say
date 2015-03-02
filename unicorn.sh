@@ -35,7 +35,10 @@ case "$1" in
         echo -e "\t unicorn stop $(test $? -eq 0 && echo "successfully" || echo "failed")."
         ;;  
     restart|force-reload)  
-        kill -USR2 `cat tmp/pids/unicorn.pid`  
+        #kill -USR2 `cat tmp/pids/unicorn.pid`
+        sh unicorn.sh stop
+        echo -e "\n\n-----------command sparate line----------\n\n"
+        sh unicorn.sh start
         ;;  
     deploy)
         echo "RACK_ENV=production bundle exec rake remote:deploy"
