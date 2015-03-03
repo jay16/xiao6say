@@ -6,30 +6,36 @@
   .table .tv {
     text-align: center;
     vertical-align: middle;
-    max-width: 20px;
+    max-width: 50px;
+    min-width: 30px;
   }
 .row{style: "margin-top: 5px; background: white;"}
   %table.table.table-condensed
     %thead
       %tr
         %th 
-        %th.tv 设备
-        %th 保留
         %th 分类
-        %th 时间
-        %th 金额
+        %th 时间/金额
+        %th 保留
+        %th 设备
     %tbody
       - @datas.each_with_index do |data, index|
         %tr
           - page_offset = (params[:page].nil? ? 0 : params[:page].to_i-1) * 30
-          %td.tv{rowspan: "2"}= page_offset + index + 1
-          %td.tv{rowspan: "2"}= data.device.platform
-          %td{colspan: "4", style: "background: sliver;"}= data.input
-        %tr
+          %td.tv{rowspan: "2", style: "width:20px;"}= page_offset + index + 1
+          %td
+            %span.label.label-info
+              = type = data.type.empty? ?  "日志" : data.type
+          %td
+            - if type != "日志"
+              - if data.time != "0"
+                = "%s 分钟" % data.time.to_s
+              - else
+                = "%s 元" % data.money.to_s
           %td= data.remain
-          %td= data.type
-          %td= data.time
-          %td= data.money
+          %td= data.device.platform
+        %tr
+          %td{colspan: "5", style: "color:gray;word-break:break-all;"}= data.input
 
 .row
   :css

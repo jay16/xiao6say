@@ -25,7 +25,10 @@
           %td.va-m= weixiner.nick_name
           %td.va-m= weixiner.messages.count
           %td.va-m= weixiner.messages.find_all { |m| m.phantom }.count
-          %td.va-m= (weixiner.status == "subscribe" ? "" : "未") + "关注"
+          %td.va-m
+            - status = (weixiner.status == "subscribe" ? "" : "未") + "关注"
+            %span.label{ class: "#{status == '关注' ? 'label-success' : 'label-danger'}"}
+              = status
 
 .row
   :css
