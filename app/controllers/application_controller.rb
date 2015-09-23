@@ -89,14 +89,18 @@ class ApplicationController < Sinatra::Base
   end
 
   def print_format_logger
-    request_info = @request_body ? %Q{Request:\n #{@request_body }} : ""
-    log_info = %Q{
-#{request.request_method} #{request.path} for #{request.ip} at #{Time.now.to_s}
-Parameters:\n #{@params.to_s}
-#{request_info}
-    }
-    puts log_info
-    logger.info log_info
+    begin
+      request_info = @request_body ? %Q{Request:\n #{@request_body }} : ""
+      log_info = %Q{
+  #{request.request_method} #{request.path} for #{request.ip} at #{Time.now.to_s}
+  Parameters:\n #{@params.to_s}
+  #{request_info}
+      }
+      puts log_info
+      logger.info log_info
+    rescue => e
+      puts "print formst logger error for:\n %s" % e.message
+    end
   end
 
   def request_body(body = request.body)

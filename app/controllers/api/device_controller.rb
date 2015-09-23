@@ -3,7 +3,11 @@ require "json"
 class API::DeviceController < API::ApplicationController
 
   route :get, :post, "/" do
-    json = JSON.parse(params[:device])
+    json = params[:device]
+    unless json.kind_of?(Hash)
+      json = JSON.parse(params[:device])
+    end
+
     device_name     = json["name"].strip
     device_id       = json["id"].strip
     device_os       = json["os"].strip
@@ -34,7 +38,12 @@ class API::DeviceController < API::ApplicationController
 
   route :get, :post, "/data" do
     device = Device.first_or_create(uid: params[:uid] || "error_uid")
-    json = JSON.parse(params[:data])
+
+    json = params[:data]
+    unless json.kind_of?(Hash)
+      json = JSON.parse(params[:data])
+    end
+
     device_data = device.device_datas.new({
       :input  => json["input"],
       :remain => json["szRemain"],

@@ -42,6 +42,7 @@ gem "unicorn", "~>4.8.3"
 gem "settingslogic", "~>2.0.9"
 #gem "rest-client", "~>1.7.2"
 gem "httparty", "~>0.13.3"
+gem "ruby-pinyin", "~>0.4.5"
 
 group :development do
   gem "net-ssh", "~>2.7.0"

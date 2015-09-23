@@ -5,7 +5,7 @@ class Cpanel::MessagesController < Cpanel::ApplicationController
 
   # root page
   get "/" do
-    @messages = Message.all
+    @messages = Message.all(:order => :id.desc)
 
     haml :index, layout: settings.layout
   end

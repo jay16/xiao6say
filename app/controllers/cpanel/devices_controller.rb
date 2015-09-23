@@ -11,7 +11,7 @@ class Cpanel::DevicesController < Cpanel::ApplicationController
   end
 
   get "/datas" do
-    @datas = DeviceData.paginate(:page => params[:page], :per_page => 30)
+    @datas = DeviceData.all(:order => [:id.desc]).paginate(:page => params[:page], :per_page => 30)
 
     haml :datas, layout: settings.layout
   end
