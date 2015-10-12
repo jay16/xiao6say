@@ -130,9 +130,13 @@ $ ->
   NProgress.set(0.4)
   App.initBootstrapTooltip()
   NProgress.set(0.8)
-  App.initBootstrapNavbarLi()
+  # App.initBootstrapNavbarLi()
   NProgress.done(true)
 
+  currentDate = new Date();
+  copyInfo = "&copy; " + currentDate.getFullYear() + " " + window.location.host;
+  $("#footer .footer").html(copyInfo);
+  
   $("input[type=checkbox]").bind "change", ->
     if App.checkboxState(this)
       App.checkboxUnChecked(this)

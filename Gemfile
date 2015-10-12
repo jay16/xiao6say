@@ -1,5 +1,5 @@
 #encoding: utf-8
-source "http://ruby.taobao.org"
+source "https://ruby.taobao.org"
 #source "http://gemcutter.org"
 
 if defined? Encoding

@@ -12,9 +12,11 @@
         = link_to Settings.website.title, "/", class: "navbar-brand"
       / Collect the nav links, forms, and other content for toggling
       .collapse.navbar-collapse{role: "navigation", id:"bs-example-navbar-collapse-1"}
-        %ul.nav.navbar-nav
-          %li.active= link_to "首页", "/"
-          %li= link_to "关于", "/about"
+        %ul.nav.navbar-nav.hidden
+          %li.active
+            = link_to "首页", "/"
+          %li
+            = link_to "关于", "/about"
 
         %ul.nav.navbar-nav.navbar-right
           %li.hidden

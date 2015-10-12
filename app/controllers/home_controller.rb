@@ -6,13 +6,13 @@ class HomeController < ApplicationController
   # root page
   get "/" do
     redirect "/user" if current_user
-    @weixiners = Weixiner.all
-    @messages  = Message.all
-    @phantoms  = Phantom.all
-    @devices   = Device.all#(:simulator => false)
-    @datas     = DeviceData.all#(:simulator => false)
+    #@weixiners = Weixiner.all
+    #@messages  = Message.all
+    #@phantoms  = Phantom.all
+    #@devices   = Device.all#(:simulator => false)
+    #@datas     = DeviceData.all#(:simulator => false)
 
-    haml :index, layout: settings.layout
+    haml :index#, layout: settings.layout
   end
 
   get "/about" do

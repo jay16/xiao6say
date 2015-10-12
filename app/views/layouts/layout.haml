@@ -26,11 +26,11 @@
         body { max-width: 1000px; min-width:300px; }
         .bs-docs-header h1 { text-align: left; padding-left: 10px;}
 
-  %body{style: "background:#f0f0f0;"}
+  %body{style: "background:#6f5499;"}
     = haml :"../layouts/_header"
     .container#main
       .row
-        %div{class: "#{is_mobile ? 'col-sm-12' : 'col-sm-9 col-sm-offset-1'}", style: "text-align:center;"}
+        %div{class: "#{is_mobile ? 'col-sm-12' : 'col-sm-10 col-sm-offset-1'}", style: "text-align:center;"}
           .loading.hidden 加载中...
           = flash_message
       %div{class: "#{is_mobile ? 'col-sm-12' : 'col-sm-9 col-sm-offset-1'}", style: "padding-left:0px;padding-right:0px;"}
@@ -38,5 +38,6 @@
 
     .container#footer
       .row.center
-        .footer &copy; #{Time.now.strftime("%Y")} #{Settings.website.footer}
+        .footer 
+          &copy; loading
 

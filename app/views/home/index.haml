@@ -1,26 +1,71 @@
-:css
-  .first-row .col-lg-4 { margin-top: -40px; }
-  .second-row .col-lg-4 { margin-top: -80px; }
-.row.first-row
-  .col-lg-2
-  .col-lg-4
-    .stat
-      %h2 Devices
-      %span.stat-heading= @devices.count
-  .col-lg-4
-    .stat
-      %h2 Datas
-      %span.stat-heading= @datas.count
-.row.second-row
-  .col-lg-4
-    .stat
-      %h2 Users
-      %span.stat-heading= @weixiners.count
-  .col-lg-4
-    .stat
-      %h2 Messages
-      %span.stat-heading= @messages.count
-  .col-lg-4
-    .stat
-      %h2 Phantoms 
-      %span.stat-heading= @phantoms.count
+-# coding: UTF-8
+!!!
+%html
+  %head
+    %title= [Settings.website.title, Settings.website.slogan].join(" | ")
+    %meta{name: "renderer", content:"webkit"}
+    %meta{"http-equiv" => "X-UA-Compatible", content: "IE=edge"}
+    %meta{name: "viewport", content: "width=device-width, initial-scale=1"}
+    %meta{"http-equiv" => "content-type", content: "text/html", charset: "UTF-8"}
+    %link{href: "#{Settings.website.favicon}", rel: "shortcut icon"}
+    = stylesheet_link_tag "bootstrap.320.min.css"
+    = stylesheet_link_tag "docs.min.css"
+    - is_mobile = mobile?
+    - if is_mobile
+      %meta{:content => "no", :name => "apple-mobile-web-app-capable"}
+      %meta{:content => "True", :name => "HandheldFriendly"}/
+      %meta{:content => "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no", :name => "viewport"}/
+      :css
+        body { max-width: 1000px; min-width:300px; }
+        .bs-docs-header h1 { text-align: left; padding-left: 10px;}
+    :css 
+      .bs-docs-featurette {padding-top: 50px;}
+      footer {color:gray; background: transparent; text-align: center;}
+  %body{style: "background:#fff;"}
+
+    %main.bs-docs-masthead
+      .span{class:'bs-docs-booticon bs-docs-booticon-lg bs-docs-booticon-outline'}
+        = image_tag "icon@2x.png", style:"vertical-align:top;padding-top:15px;"
+
+      %p.lead
+        每天花费 6 分钟管理好自己的时间，让每一秒都过的更有价值
+
+      %p.lead
+        = link_to "立即下载", "javascript:void(0);", class: "btn btn-outline-inverse btn-lg", onclick: "alert('部署中，敬请期待');"
+
+      %p.version
+        当前版本： v0.0.0 | 文档更新于：2015-10-12
+
+    .bs-docs-featurette
+      .container
+        %p.lead 我们团队正在开发一个用说话来记录时间、金钱花费的 APP， 当然还可以记录短日记。 
+
+        .bs-docs-section
+          .bs-callout.bs-callout-danger
+            %h4 关于小6
+            %p APP 名叫 “小6语记”，还未上架，取意为 “每天花 6 分钟管理好自己的时间花费，让每一天都过的更有价值”，目前处于核心组件内部测试阶段。
+
+          .bs-callout.bs-callout-danger
+            %h4 核心技术
+            %p 小6的核心技术是把我们的口语文字转化为统计数字， 比如： 
+            %p 1. 语音说 “我学习英语四十分钟”，自动转化为 ［主题：学习英语］［时间：40］［分类：学习］ 
+            %p 2. 语音说 “我买衣服花了 1 千块”，自动转化为 ［主题：买衣服］［金额：1000］［分类：购物］ 
+
+          .bs-callout.bs-callout-danger
+            %h4 初步计划
+            %p 当小6这个 “时间金钱版” 的人工智能内核第一版完成后，我们会逐步 提炼代码，发展成中文语义解析的开放源代码项目，让有兴趣的程序猿、算法狮都加入进来。
+
+          .bs-callout.bs-callout-danger
+            %h4 期待您的参与
+            %p 现在邀请朋友加入内测，以帮助提高语句解析的准确性，感兴趣的朋友请添加［胜因］的公众号，暂时用微信的语音功能来提交例句。 
+            %p 微信号：xiaojiti-com 或扫二维码加入
+            %p{style:"float:center;"}
+              = image_tag "xiao6say.jpg", style: "max-width: 100px;"
+
+    %footer
+      loading
+
+
+    = javascript_include_tag "jquery-2.1.1.min.js"
+    = javascript_include_tag "bootstrap.320.min.js"
+    = javascript_include_tag "index.js"
