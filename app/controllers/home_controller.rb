@@ -6,13 +6,17 @@ class HomeController < ApplicationController
   # root page
   get "/" do
     redirect "/user" if current_user
-    #@weixiners = Weixiner.all
-    #@messages  = Message.all
-    #@phantoms  = Phantom.all
-    #@devices   = Device.all#(:simulator => false)
-    #@datas     = DeviceData.all#(:simulator => false)
 
-    haml :index#, layout: settings.layout
+    cache_path = File.join(ENV["APP_ROOT_PATH"], "tmp", Settings.pgyer.cache_file)
+    mtime = File.mtime(cache_path)
+
+    last_modified mtime.to_s
+    etag md5_key(mtime.to_s)
+    puts mtime.to_s
+
+    @app_info = read_json_from(Settings.pgyer.cache_file)
+
+    haml :index
   end
 
   get "/about" do

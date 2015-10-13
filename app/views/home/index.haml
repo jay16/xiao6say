@@ -31,10 +31,11 @@
         每天花费 6 分钟管理好自己的时间，让每一秒都过的更有价值
 
       %p.lead
-        = link_to "立即下载", "javascript:void(0);", class: "btn btn-outline-inverse btn-lg", onclick: "alert('部署中，敬请期待');"
+        = link_to "立即安装", Settings.pgyer.install_url, class: "btn btn-outline-inverse btn-lg"
 
       %p.version
-        当前版本： v0.0.0 | 文档更新于：2015-10-12
+        = "当前版本: #{@app_info['appVersion']} | 体积: #{human_file_size(@app_info['appFileSize'].to_f)} | 更新于: #{@app_info['appCreated']} | "
+        = link_to "蒲公英", "http://www.pgyer.com/xiao6say", target:"_blank"
 
     .bs-docs-featurette
       .container
@@ -64,7 +65,6 @@
 
     %footer
       loading
-
 
     = javascript_include_tag "jquery-2.1.1.min.js"
     = javascript_include_tag "bootstrap.320.min.js"

@@ -36,4 +36,15 @@
       .map { |var| obj.instance_variable_get("@%s" % var).to_s }
       .join(" ")
   end
+
+  def human_file_size(file_size)
+    units = %w(B K M G T P)
+    index = 0
+    while file_size > 1024
+      file_size = file_size / 1024
+      index += 1
+    end
+
+    return "%.2f%s" % [file_size, units[index]]
+  end
 end

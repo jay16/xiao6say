@@ -55,3 +55,15 @@ require "asset-handler"
 # helper load before controller
 recursion_require("app/helpers", /_helper\.rb$/, root_path)
 recursion_require("app/controllers", /_controller\.rb$/, root_path, [/^application_/])
+
+# get ios app latest version info from pgyer.com
+require "lib/utils/pgyer_utils.rb"
+
+app_version_info = Pgyer.latest_version_info
+cache_path = File.join(ENV["APP_ROOT_PATH"], "tmp", Settings.pgyer.cache_file)
+puts cache_path
+puts app_version_info
+File.open(cache_path, "wb+") do |file|
+  file.puts(app_version_info.to_json)
+end
+

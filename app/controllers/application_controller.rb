@@ -134,6 +134,23 @@ class ApplicationController < Sinatra::Base
     status code || 200
   end
 
+  def write_json_into(file_name, data)
+    cache_path = File.join(ENV["APP_ROOT_PATH"], "tmp", file_name)
+    File.open(cache_path, "wb+") do |file|
+      file.puts(data.to_json)
+    end
+  end
+
+  def read_json_from(file_name)
+    cache_path = File.join(ENV["APP_ROOT_PATH"], "tmp", file_name)
+    if File.exist?(cache_path)
+      cache_str = IO.read(cache_path)
+      return JSON.parse(cache_str)
+    else
+      return {}
+    end
+  end
+
   # 404 page
   not_found do
     haml :"shared/not_found", layout: :"layouts/layout", views: ENV["VIEW_PATH"]

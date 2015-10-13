@@ -1,9 +1,8 @@
 -#encoding: utf-8
+.row
+  %h1 整体概况
 
 .row
-  %h1= PinYin.sentence("整体概况")
-
-.row{style: "margin-top: 5px; background: white;"}
   %table.table.table-striped.table-condensed
     %thead
       %tr
@@ -37,3 +36,29 @@
         %td= @device_datas.count
         %td= "模拟例句: %d" % @device_datas.find_all { |data| data.simulator }.count
 
+.row
+  %h1 IOS应用信息
+  = link_to "刷新", "/cpanel/refresh_app_info"
+
+.row
+  %table.table.table-striped.table-condensed
+    %thead
+      %tr
+        %th 参数
+        %th 信息
+    %tbody
+      %tr
+        %td 应用名称
+        %td= @app_info["appName"]
+      %tr
+        %td 版本号
+        %td= @app_info["appVersion"]
+      %tr
+        %td 应用ID
+        %td= @app_info["appIdentifier"]
+      %tr
+        %td 应用体积
+        %td= human_file_size(@app_info["appFileSize"].to_f)
+      %tr
+        %td 更新时间
+        %td= @app_info["appCreated"]
