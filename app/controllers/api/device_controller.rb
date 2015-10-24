@@ -1,5 +1,4 @@
 ﻿#encoding: utf-8 
-require "json"
 class API::DeviceController < API::ApplicationController
 
   route :get, :post, "/" do
@@ -23,19 +22,21 @@ class API::DeviceController < API::ApplicationController
         :simulator => device_platform.downcase.include?("simulator")
       })
     end
+    
     if device.save_with_logger
       device_info = device.device_infoes.new(json: params[:device])
       device_info.save_with_logger
 
-      hash = { code: 1, info: device.uid }
+      hash = { code: 1, device_uid: device.uid }
       respond_with_json hash, 200
     else
       puts device.errors.to_s
-      hash = { code: 0, info: "error_uid", error: device.errors.inspect.to_s }
+      hash = { code: 0, device_uid: "error_uid", error: device.errors }
       respond_with_json hash, 401
     end
   end
 
+  # 过期，使用关联微信上传数据
   route :get, :post, "/data" do
     device = Device.first_or_create(uid: params[:uid] || "error_uid")
 

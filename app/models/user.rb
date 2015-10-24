@@ -17,7 +17,7 @@ class User
     end
 
     def admin?
-      @is_admin ||= Settings.admins.split(/,/).include?(self.email)
+      Settings.admins.split(/,/).include?(self.email)
     end
 
     # instance methods

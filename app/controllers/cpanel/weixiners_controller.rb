@@ -6,7 +6,7 @@ class Cpanel::WeixinersController < Cpanel::ApplicationController
 
   # root page
   get "/" do
-    @weixiners = Weixiner.paginate(:page => params[:page], :per_page => 30)
+    @weixiners = Weixiner.paginate(:page => params[:page], :per_page => 15)
 
     haml :index, layout: settings.layout
   end

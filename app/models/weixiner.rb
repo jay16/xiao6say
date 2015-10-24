@@ -12,6 +12,8 @@ class Weixiner
     property :status, String, :default => "subscribe"
 
     has n, :messages # 微信消息
+    has n, :weixiner_devices
+    has n, :devices, :through => :weixiner_devices
     has 1, :weixiner_info
 
     def head_img_url

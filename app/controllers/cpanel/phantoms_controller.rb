@@ -7,7 +7,7 @@ class Cpanel::PhantomsController < Cpanel::ApplicationController
 
   # root page
   get "/" do
-    @phantoms = Phantom.paginate(:page => params[:page], :per_page => 30)
+    @phantoms = Phantom.paginate(:page => params[:page], :per_page => 15)
 
     haml :index, layout: settings.layout
   end

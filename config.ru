@@ -4,6 +4,7 @@
   "/weixin"            => "WeixinController",
   "/user"              => "UserController",
   "/api/device"        => "API::DeviceController",
+  "/api/weixiner"      => "API::WeixinerController",
   "/cpanel"            => "Cpanel::HomeController",
   "/cpanel/weixiners"  => "Cpanel::WeixinersController",
   "/cpanel/messages"   => "Cpanel::MessagesController",

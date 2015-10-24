@@ -5,7 +5,7 @@ class Cpanel::DevicesController < Cpanel::ApplicationController
   include WillPaginate::Sinatra::Helpers
 
   get "/" do
-    @devices = Device.paginate(:page => params[:page], :per_page => 30)
+    @devices = Device.paginate(:page => params[:page], :per_page => 15)
 
     haml :index, layout: settings.layout
   end

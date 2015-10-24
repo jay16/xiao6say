@@ -15,6 +15,8 @@ class Device
 
     has n, :device_infoes
     has n, :device_datas
+    has n, :weixiner_devices
+    #has n, :weixiners, :through => :weixiner_device
 
     def current_info
       self.device_infoes.last
