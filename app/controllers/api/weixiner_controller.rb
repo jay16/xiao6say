@@ -7,7 +7,7 @@ class API::WeixinerController < API::ApplicationController
       weixiner_info = weixiner.weixiner_info
       hash = {
         code: 1,
-        timestamp: Time.now.strftime("%Y-%m-%d %H:%M")
+        timestamp: Time.now.strftime("%Y-%m-%d %H:%M"),
         weixiner_info: {
           nickname: weixiner_info.nickname,
           openid: weixiner_info.openid,
