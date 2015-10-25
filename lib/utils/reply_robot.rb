@@ -18,7 +18,9 @@ module Sinatra
       end
       def handler
         if @raw_cmd =~ /^\?/ or @raw_cmd.force_encoding('UTF-8').start_with?("？")
-            help
+          help
+        elsif @raw_cmd.strip == "设备绑定"
+          "您的微信帐号uid：\n%s" % @message.weixiner.uid
         else
           voice = @message.weixiner.messages.last(:msg_type => "voice")
           if voice.nil?

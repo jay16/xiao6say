@@ -40,9 +40,10 @@ class Weixiner
     def personal_report
       _messages = self.messages
       report = "个人统计"
-      report << "\n消息数量: %d" % _messages.count rescue 0
-      report << "\n例句数量: %d" % _messages.find_all { |m| m.phantom }.count rescue 0
-      report << "\n例句判断: %d" % _messages.find_all { |m| m.phantom }.find_all { |m| !m.phantom.yn.empty? }.count rescue 0
+      report << "\n微信消息: %d" % _messages.count rescue 0
+      report << "\n微信例句: %d" % _messages.find_all { |m| m.phantom }.count rescue 0
+      report << "\n绑定设备: %d" % self.devices.count
+      report << "\n设备例句: %d" % self.devices.inject(0) {|sum, device| sum += device.device_datas.count }
       report << "\n再次感谢您的贡献/::P"
     end
 

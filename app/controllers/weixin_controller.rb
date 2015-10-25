@@ -42,6 +42,8 @@ class WeixinController < ApplicationController
       reply = reply_robot(message)
     end
 
+    reply += "\n" + weixiner.personal_report
+
     robot.sender(msg_type: "text") do |msg|
       msg.content = reply
       msg.to_xml
