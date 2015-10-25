@@ -36,9 +36,9 @@ class API::DeviceController < API::ApplicationController
     end
   end
 
-  # 过期，使用关联微信上传数据
-  route :get, :post, "/data" do
-    device = Device.first_or_create(uid: params[:uid] || "error_uid")
+  # 使用微信关联设备
+  route :get, :post, "/:device_uid/data" do
+    device = Device.first_or_create(uid: params[:device_uid] || "device-uid-not-provided")
 
     json = params[:data]
     unless json.kind_of?(Hash)
@@ -57,7 +57,7 @@ class API::DeviceController < API::ApplicationController
       hash = { code: 1, info: device_data.id }
       respond_with_json hash, 200
     else
-      hash = { code: 0, info: "error", error: device_data.errors.inspect.to_s }
+      hash = { code: 0, info: "error", error: device_data.errors }
       respond_with_json hash, 401
     end
   end
