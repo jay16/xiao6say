@@ -12,7 +12,8 @@ class API::WeixinerController < API::ApplicationController
           nickname: weixiner_info.nickname,
           openid: weixiner_info.openid,
           headimgurl: weixiner_info.headimgurl,
-          unionid: weixiner_info.unionid
+          sex: weixiner.sex,
+          area: weixiner.area
         }
       }
       respond_with_json hash, 200

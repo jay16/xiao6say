@@ -12,6 +12,8 @@
         %th -
         %th 头像
         %th 昵称
+        %th 性别
+        %th 位置
         %th 消息
         %th 例句
         %th 状态
@@ -23,6 +25,8 @@
           %td{"data-openid" => weixiner.uid}
             = image_tag weixiner.head_img_url, class: "avatar"
           %td.va-m= weixiner.nick_name
+          %td.va-m= weixiner.sex
+          %td.va-m= weixiner.area
           %td.va-m= weixiner.messages.count
           %td.va-m= weixiner.messages.find_all { |m| m.phantom }.count
           %td.va-m

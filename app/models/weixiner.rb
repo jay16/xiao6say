@@ -26,6 +26,17 @@ class Weixiner
       self.weixiner_info.nickname rescue "TODO"
     end
 
+    def sex
+      self.weixiner_info.sex == 1 ? "男" : "女"
+    end
+
+    def area
+      weixiner_info = self.weixiner_info
+      [weixiner_info.country, weixiner_info.province, weixiner_info.city]
+      .find_all { |item| !item.nil? and item.length > 0 }
+      .join("/")
+    end
+
     def personal_report
       _messages = self.messages
       report = "个人统计"
