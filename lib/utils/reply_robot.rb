@@ -24,7 +24,8 @@ module Sinatra
         elsif @raw_cmd.start_with?("忘记手势密码@")
           device_uid = @raw_cmd.sub("忘记手势密码@", "")
           if device = Device.first(uid: device_uid)
-            device.gesture_password ? device.gesture_password : "数据未上传至服务器"
+            gesture_password = device.gesture_password ? device.gesture_password : "数据未上传至服务器"
+            "0 1 2\n3 4 5\n6 7 8\n\n%s" % gesture_password
           else
             "未找到设备(#{device_uid}),请确认输入无误."
           end
