@@ -21,6 +21,13 @@ module Sinatra
           help
         elsif @raw_cmd.strip == "设备绑定"
           @message.weixiner.uid
+        elsif @raw_cmd.start_with?("忘记手势密码@")
+          device_uid = @raw_cmd.sub("忘记手势密码@", "")
+          if device = Device.first(uid: device_uid)
+            device.gesture_password ? device.gesture_password : "数据未上传至服务器"
+          else
+            "未找到设备(#{device_uid}),请确认输入无误."
+          end
         else
           voice = @message.weixiner.messages.last(:msg_type => "voice")
           if voice.nil?

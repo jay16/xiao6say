@@ -61,4 +61,24 @@ class API::DeviceController < API::ApplicationController
       respond_with_json hash, 401
     end
   end
+
+  # 移动设备手势密码锁
+  route :get, :post, "/:device_uid/gesture_password/:gesture_password" do
+    device = Device.first_or_create(uid: params[:device_uid] || "device-uid-not-provided")
+    if params[:gesture_password]
+      device.update(gesture_password: params[:gesture_password])
+
+      if device.gesture_password == params[:gesture_password]
+        hash = { code: 1, info: device.gesture_password }
+        respond_with_json hash, 200
+      else
+        hash = { code: 0, info: "fail set gesture_password = '#{params[:gesture_password]}'" }
+        respond_with_json hash, 200
+      end
+    else
+        hash = { code: 0, info: "please offer gesture password" }
+        respond_with_json hash, 401
+    end
+
+  end
 end

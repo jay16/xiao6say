@@ -12,6 +12,7 @@ class Device
     property :os        , String # system: android/Iphone os
     property :platform  , String # platform: iphone 6/ xiaomi 1s
     property :simulator , Boolean, :default => false
+    property :gesture_password , String
 
     has n, :device_infoes
     has n, :device_datas
