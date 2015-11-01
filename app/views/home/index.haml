@@ -23,7 +23,7 @@
       footer {color:gray; background: transparent; text-align: center;}
   %body{style: "background:#fff;"}
 
-    %main.bs-docs-masthead
+    %main.bs-docs-masthead{style:"background:#062E39"}
       .span{class:'bs-docs-booticon bs-docs-booticon-lg bs-docs-booticon-outline'}
         = image_tag "icon@2x.png", style:"vertical-align:top;padding-top:15px;"
 
@@ -34,7 +34,7 @@
         = link_to "立即安装", Settings.pgyer.install_url, class: "btn btn-outline-inverse btn-lg"
 
       %p.version
-        = "当前版本: #{@app_info['appVersion']} | 体积: #{human_file_size(@app_info['appFileSize'].to_f)} | 更新于: #{@app_info['appCreated']} | "
+        = "官网版本: #{@app_info['appVersion']} | 运行环境: IOS7.0 或以上</br>体积: #{human_file_size(@app_info['appFileSize'].to_f)} | 更新于: #{@app_info['appCreated']} | "
         = link_to "蒲公英", "http://www.pgyer.com/xiao6say", target:"_blank"
 
     .bs-docs-featurette
